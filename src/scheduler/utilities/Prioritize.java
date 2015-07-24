@@ -97,8 +97,6 @@ public class Prioritize
 				
 				Statement stmt = c.createStatement();
 				
-				// test comment
-				
 				String sql = ("UPDATE Resident_Assistants SET weekendsWorked = " + newWeekendsWorked + " WHERE name = '" + tempName + "';");  
 				stmt.executeUpdate(sql);
 			}
