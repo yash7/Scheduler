@@ -9,19 +9,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.DayOfWeek;
-import java.awt.Desktop;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File;
 
 public class Prioritize 
 {
 	
 	private static ArrayList<DutyNight> dutyNights;
 	private static ArrayList<RAObject> RAs;
-	private static int maxWeekends = 0;
-	private static int maxWeekdays = 0;
 	
 	public static ArrayList<DutyNight> getDutyList(LocalDate startDate, LocalDate endDate)
 	{
@@ -93,13 +89,13 @@ public class Prioritize
 				RAObject tempRA = RAs.get(i);
 				String tempName = tempRA.getName();
 				int newWeekendsWorked = tempRA.getWeekendsWorked();
-				// int newWeekdaysWorked = tempRA.getWeekdaysWorked();
+				int newWeekdaysWorked = tempRA.getWeekdaysWorked();
 				
 				Statement stmt = c.createStatement();
 				
-				// test comment
-				
 				String sql = ("UPDATE Resident_Assistants SET weekendsWorked = " + newWeekendsWorked + " WHERE name = '" + tempName + "';");  
+				stmt.executeUpdate(sql);
+				sql = ("UPDATE Resident_Assistants SET weekdaysWorked = " + newWeekdaysWorked + " WHERE name = '" + tempName + "';");
 				stmt.executeUpdate(sql);
 			}
 		}
@@ -142,121 +138,246 @@ public class Prioritize
 		
 	}
 	
-	private static void equalise()
+	private static int[] equalise()
 	{
-		recalculateMaxWeekends();
+
+		int maxWeekends = recalculateMaxWeekends();
+		int maxWeekdays = recalculateMaxWeekdays();
 		
+		int[] maxArray = new int[2];
 		for (int i = 0; i < dutyNights.size(); i++)
 		{
 			DutyNight tempDN = dutyNights.get(i);
-			// DayOfWeek tempDW = tempDN.getDate().getDayOfWeek();
+			DayOfWeek tempDW = tempDN.getDate().getDayOfWeek();
 			ArrayList<RAObject> availableRAs = tempDN.getAvailableRAs();
 			
-			if (availableRAs.size() == 0)
+			if(tempDW.equals(DayOfWeek.of(5)) || tempDW.equals(DayOfWeek.of(6)))
 			{
-				continue;
-			}
-			
-			if (availableRAs.size() == 1)
-			{
-				availableRAs.get(0).setWeekendsWorked(availableRAs.get(0).getWeekendsWorked() + 1);
-				tempDN.setRA1(availableRAs.get(0));
-				continue;
-			}
-			
-			boolean ra1Found = false;
-			boolean ra2Found = false;
-			
-			for (int j = 0; j < availableRAs.size(); j++)
-			{
-				RAObject tempRA = availableRAs.get(j);
-				if (tempRA.getWeekendsWorked() < maxWeekends)
+				if (availableRAs.size() == 0)
 				{
-					if (!(ra1Found))
+					continue;
+				}
+				
+				if (availableRAs.size() == 1)
+				{
+					availableRAs.get(0).setWeekendsWorked(availableRAs.get(0).getWeekendsWorked() + 1);
+					tempDN.setRA1(availableRAs.get(0));
+					continue;
+				}
+				
+				boolean ra1Found = false;
+				boolean ra2Found = false;
+				
+				for (int j = 0; j < availableRAs.size(); j++)
+				{
+					RAObject tempRA = availableRAs.get(j);
+					if (tempRA.getWeekendsWorked() < maxWeekends)
 					{
-						tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
-						tempDN.setRA1(tempRA);
-						// tempDN.getAvailableRAs().remove(j);
-						dutyNights.set(i, tempDN);
-						ra1Found = true;
+						if (!(ra1Found))
+						{
+							tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
+							tempDN.setRA1(tempRA);
+							// tempDN.getAvailableRAs().remove(j); // could just set to null
+							dutyNights.set(i, tempDN);
+							ra1Found = true;
+						}
+						else if (!(ra2Found))
+						{
+							tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
+							tempDN.setRA2(tempRA);
+							// tempDN.getAvailableRAs().remove(j);
+							dutyNights.set(i, tempDN);
+							ra2Found = true;
+						}
+						else
+						{
+//							System.out.println("Alternate used");
+							tempDN.addAlternateRA(tempRA);
+							
+							dutyNights.set(i, tempDN);
+						}
 					}
-					else if (!(ra2Found))
+				}
+				
+				if (!(ra1Found))
+				{
+					Random r = new Random();
+					int ra1Index = r.nextInt(availableRAs.size());
+					int ra2Index = r.nextInt(availableRAs.size());
+					while (ra2Index == ra1Index)
 					{
-						tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
-						tempDN.setRA2(tempRA);
-						// tempDN.getAvailableRAs().remove(j);
-						dutyNights.set(i, tempDN);
-						ra2Found = true;
+						ra2Index = r.nextInt(availableRAs.size());
 					}
-					else
+					
+					availableRAs.get(ra1Index).setWeekendsWorked(availableRAs.get(ra1Index).getWeekendsWorked() + 1);
+					tempDN.setRA1(availableRAs.get(ra1Index));
+					ra1Found = true;
+					
+					availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
+					tempDN.setRA2(availableRAs.get(ra2Index));
+					ra2Found = true;
+					dutyNights.set(i, tempDN);
+				}
+				
+				if (!(ra2Found))
+				{
+					Random r = new Random();
+					int ra2Index = r.nextInt(availableRAs.size());
+					while (availableRAs.get(ra2Index).getName().compareTo(tempDN.getRA1().getName()) == 0) // USE ID
 					{
-						System.out.println("Alternate used");
+						ra2Index = r.nextInt(availableRAs.size());
+					}
+					
+					availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
+					tempDN.setRA2(availableRAs.get(ra2Index));
+					ra2Found = true;
+					dutyNights.set(i, tempDN);
+				}
+				
+				for (int k = 0; k < availableRAs.size(); k++)
+				{
+					RAObject tempRA = availableRAs.get(k);
+					if ((tempRA.getName().compareTo(tempDN.getRA1().getName()) != 0) && (tempRA.getName().compareTo(tempDN.getRA2().getName()) != 0) && !(tempDN.getAlternateRAs().contains(tempRA)))
+					{
 						tempDN.addAlternateRA(tempRA);
-						
-						dutyNights.set(i, tempDN);
 					}
 				}
-			}
 			
-			if (!(ra1Found))
-			{
-				Random r = new Random();
-				int ra1Index = r.nextInt(availableRAs.size());
-				int ra2Index = r.nextInt(availableRAs.size());
-				while (ra2Index == ra1Index)
+				maxWeekends = recalculateMaxWeekends();
+				maxWeekdays = recalculateMaxWeekdays();
+				
+				System.out.println(tempDN.toString2());
+				System.out.println("maxWeekends = " + maxWeekends);
+				System.out.println("maxWeekdays = " + maxWeekdays);
+				for (int j = 0; j < RAs.size(); j++)
 				{
-					ra2Index = r.nextInt(availableRAs.size());
+					System.out.print(RAs.get(j).getName() + " " + RAs.get(j).getWeekendsWorked() + " " + RAs.get(j).getWeekdaysWorked() + ", ");
+				}
+				System.out.println();
+				System.out.println();
+			}
+			else
+			{
+				if (availableRAs.size() == 0)
+				{
+					continue;
 				}
 				
-				availableRAs.get(ra1Index).setWeekendsWorked(availableRAs.get(ra1Index).getWeekendsWorked() + 1);
-				tempDN.setRA1(availableRAs.get(ra1Index));
-				ra1Found = true;
-				
-				availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
-				tempDN.setRA2(availableRAs.get(ra2Index));
-				ra2Found = true;
-				dutyNights.set(i, tempDN);
-			}
-			
-			if (!(ra2Found))
-			{
-				Random r = new Random();
-				int ra2Index = r.nextInt(availableRAs.size());
-				while (availableRAs.get(ra2Index).getName().compareTo(tempDN.getRA1().getName()) == 0) // USE ID
+				if (availableRAs.size() == 1)
 				{
-					ra2Index = r.nextInt(availableRAs.size());
+					// availableRAs.get(0).setWeekendsWorked(availableRAs.get(0).getWeekendsWorked() + 1);
+					availableRAs.get(0).setWeekdaysWorked(availableRAs.get(0).getWeekdaysWorked() + 1);
+					tempDN.setRA1(availableRAs.get(0));
+					continue;
 				}
 				
-				availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
-				tempDN.setRA2(availableRAs.get(ra2Index));
-				ra2Found = true;
-				dutyNights.set(i, tempDN);
-			}
-			
-			for (int k = 0; k < availableRAs.size(); k++)
-			{
-				RAObject tempRA = availableRAs.get(k);
-				if ((tempRA.getName().compareTo(tempDN.getRA1().getName()) != 0) && (tempRA.getName().compareTo(tempDN.getRA2().getName()) != 0) && !(tempDN.getAlternateRAs().contains(tempRA)))
+				boolean ra1Found = false;
+				boolean ra2Found = false;
+				
+				for (int j = 0; j < availableRAs.size(); j++)
 				{
-					tempDN.addAlternateRA(tempRA);
+					RAObject tempRA = availableRAs.get(j);
+//					if (tempRA.getWeekendsWorked() < maxWeekends)
+					if (tempRA.getWeekdaysWorked() < maxWeekdays)
+					{
+						if (!(ra1Found))
+						{
+//							tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
+							tempRA.setWeekdaysWorked(tempRA.getWeekdaysWorked() + 1);
+							tempDN.setRA1(tempRA);
+							// tempDN.getAvailableRAs().remove(j); // could just set to null
+							dutyNights.set(i, tempDN);
+							ra1Found = true;
+						}
+						else if (!(ra2Found))
+						{
+//							tempRA.setWeekendsWorked(tempRA.getWeekendsWorked() + 1);
+							tempRA.setWeekdaysWorked(tempRA.getWeekdaysWorked() + 1);
+							tempDN.setRA2(tempRA);
+							// tempDN.getAvailableRAs().remove(j);
+							dutyNights.set(i, tempDN);
+							ra2Found = true;
+						}
+						else
+						{
+//							System.out.println("Alternate used");
+							tempDN.addAlternateRA(tempRA);
+							
+							dutyNights.set(i, tempDN);
+						}
+					}
 				}
-			}
-		
-			recalculateMaxWeekends();
+				
+				if (!(ra1Found))
+				{
+					Random r = new Random();
+					int ra1Index = r.nextInt(availableRAs.size());
+					int ra2Index = r.nextInt(availableRAs.size());
+					while (ra2Index == ra1Index)
+					{
+						ra2Index = r.nextInt(availableRAs.size());
+					}
+					
+//					availableRAs.get(ra1Index).setWeekendsWorked(availableRAs.get(ra1Index).getWeekendsWorked() + 1);
+					availableRAs.get(ra1Index).setWeekdaysWorked(availableRAs.get(ra1Index).getWeekdaysWorked() + 1);
+					tempDN.setRA1(availableRAs.get(ra1Index));
+					ra1Found = true;
+					
+//					availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
+					availableRAs.get(ra2Index).setWeekdaysWorked(availableRAs.get(ra2Index).getWeekdaysWorked() + 1);
+					tempDN.setRA2(availableRAs.get(ra2Index));
+					ra2Found = true;
+					dutyNights.set(i, tempDN);
+				}
+				
+				if (!(ra2Found))
+				{
+					Random r = new Random();
+					int ra2Index = r.nextInt(availableRAs.size());
+					while (availableRAs.get(ra2Index).getName().compareTo(tempDN.getRA1().getName()) == 0) // USE ID
+					{
+						ra2Index = r.nextInt(availableRAs.size());
+					}
+					
+//					availableRAs.get(ra2Index).setWeekendsWorked(availableRAs.get(ra2Index).getWeekendsWorked() + 1);
+					availableRAs.get(ra2Index).setWeekdaysWorked(availableRAs.get(ra2Index).getWeekdaysWorked() + 1);
+					tempDN.setRA2(availableRAs.get(ra2Index));
+					ra2Found = true;
+					dutyNights.set(i, tempDN);
+				}
+				
+				for (int k = 0; k < availableRAs.size(); k++)
+				{
+					RAObject tempRA = availableRAs.get(k);
+					if ((tempRA.getName().compareTo(tempDN.getRA1().getName()) != 0) && (tempRA.getName().compareTo(tempDN.getRA2().getName()) != 0) && !(tempDN.getAlternateRAs().contains(tempRA)))
+					{
+						tempDN.addAlternateRA(tempRA);
+					}
+				}
 			
-			System.out.println(tempDN.toString2());
-			System.out.println(maxWeekends);
-			for (int j = 0; j < RAs.size(); j++)
-			{
-				System.out.print(RAs.get(j).getName() + " " + RAs.get(j).getWeekendsWorked() + ", ");
+				maxWeekends = recalculateMaxWeekends();
+				maxWeekdays = recalculateMaxWeekdays();
+				
+				System.out.println(tempDN.toString2());
+				System.out.println("maxWeekends = " + maxWeekends);
+				System.out.println("maxWeekdays = " + maxWeekdays);
+				for (int j = 0; j < RAs.size(); j++)
+				{
+					System.out.print(RAs.get(j).getName() + " " + RAs.get(j).getWeekendsWorked() + " " + RAs.get(j).getWeekdaysWorked() + ", ");
+				}
+				System.out.println();
+				System.out.println();
 			}
-			System.out.println();
-			System.out.println();
 		}
+		
+		maxArray[0] = maxWeekends;
+		maxArray[1] = maxWeekdays;
+		return maxArray;
 	}
 	
-	private static void recalculateMaxWeekends()
+	private static int recalculateMaxWeekends()
 	{
+		int maxWeekends = 0;
 		for (int i = 0; i < RAs.size(); i++)
 		{
 			if (RAs.get(i).getWeekendsWorked() > maxWeekends)
@@ -264,10 +385,12 @@ public class Prioritize
 				maxWeekends = RAs.get(i).getWeekendsWorked();
 			}
 		}
+		return maxWeekends;
 	}
 	
-	private static void recalculateMaxWeekdays()
+	private static int recalculateMaxWeekdays()
 	{
+		int maxWeekdays = 0;
 		for (int i = 0; i < RAs.size(); i++)
 		{
 			if (RAs.get(i).getWeekdaysWorked() > maxWeekdays)
@@ -275,6 +398,7 @@ public class Prioritize
 				maxWeekdays = RAs.get(i).getWeekdaysWorked();
 			}
 		}
+		return maxWeekdays;
 	}
 	
 	public static void run(Connection c, String sDate, String eDate, String outputFilePath) throws SQLException
@@ -299,7 +423,7 @@ public class Prioritize
 			System.out.println(RAs.get(i));
 		}
 		
-		equalise();
+		int[] maxArray = equalise();
 		
 //		for (int i = 0; i < dutyNights.size(); i++)
 //		{
@@ -317,8 +441,8 @@ public class Prioritize
 			System.out.println(RAs.get(i));
 		}
 		
-		System.out.println("maxWeekends = " + maxWeekends);
-		System.out.println("maxWeekdays = " + maxWeekdays);
+		System.out.println("maxWeekends = " + maxArray[0]);
+		System.out.println("maxWeekdays = " + maxArray[1]);
 		System.out.println("completed");
 		
 		// Output to file
@@ -347,12 +471,6 @@ public class Prioritize
 			
 			pw.close();
 			fw.close();
-			
-			File f = new File(outputFilePath);
-			if (Desktop.isDesktopSupported())
-			{
-				Desktop.getDesktop().edit(f);
-			}
 			
 		}
 		catch (IOException e)

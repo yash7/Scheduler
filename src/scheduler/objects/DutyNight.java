@@ -110,23 +110,23 @@ public class DutyNight
 		}
 		else if (ra2 == null)
 		{
-			s = (date + " " + date.getDayOfWeek().toString() + "\n\n" + ra1.getName());
+			s = (date + " " + date.getDayOfWeek().toString() + "\n" + ra1.getName());
 			return s;
 		}
 		else if (alternateRAs.size() == 0)
 		{
-			s = (date + " " + date.getDayOfWeek().toString() + "\n\n" + ra1.getName() + "\n\n" + ra2.getName());
+			s = (date + " " + date.getDayOfWeek().toString() + "\n" + ra1.getName() + "\n" + ra2.getName());
 		}
 		else
 		{
-			s = (date + " " + date.getDayOfWeek().toString() + "\n\n" + ra1.getName() + "\n\n" + ra2.getName() + "\n\nAlternates:");
+			s = (date + " " + date.getDayOfWeek().toString() + "\n" + ra1.getName() + "\n" + ra2.getName() + "\nAlternates:");
 			for (int i = 0; i < alternateRAs.size(); i++)
 			{
 				s = (s + " " + alternateRAs.get(i).getName());  
 			}
 		}
 		
-		s = (s + "\n\n");
+		// s = (s + "\n");
 		
 		return s;
 	}

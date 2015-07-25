@@ -20,8 +20,6 @@ public class Prioritize
 	
 	private static ArrayList<DutyNight> dutyNights;
 	private static ArrayList<RAObject> RAs;
-	private static int maxWeekends = 0;
-	private static int maxWeekdays = 0;
 	
 	public static ArrayList<DutyNight> getDutyList(LocalDate startDate, LocalDate endDate)
 	{
@@ -140,10 +138,13 @@ public class Prioritize
 		
 	}
 	
-	private static void equalise()
+	private static int[] equalise()
 	{
-		recalculateMaxWeekends();
+//		recalculateMaxWeekends();
+		int maxWeekends = recalculateMaxWeekends();
+		int maxWeekdays = recalculateMaxWeekdays();
 		
+		int[] maxArray = new int[2];
 		for (int i = 0; i < dutyNights.size(); i++)
 		{
 			DutyNight tempDN = dutyNights.get(i);
@@ -240,7 +241,7 @@ public class Prioritize
 				}
 			}
 		
-			recalculateMaxWeekends();
+			maxWeekends = recalculateMaxWeekends();
 			
 			System.out.println(tempDN.toString2());
 			System.out.println(maxWeekends);
@@ -251,10 +252,15 @@ public class Prioritize
 			System.out.println();
 			System.out.println();
 		}
+		
+		maxArray[0] = maxWeekends;
+		maxArray[1] = maxWeekdays;
+		return maxArray;
 	}
 	
-	private static void recalculateMaxWeekends()
+	private static int recalculateMaxWeekends()
 	{
+		int maxWeekends = 0;
 		for (int i = 0; i < RAs.size(); i++)
 		{
 			if (RAs.get(i).getWeekendsWorked() > maxWeekends)
@@ -262,10 +268,12 @@ public class Prioritize
 				maxWeekends = RAs.get(i).getWeekendsWorked();
 			}
 		}
+		return maxWeekends;
 	}
 	
-	private static void recalculateMaxWeekdays()
+	private static int recalculateMaxWeekdays()
 	{
+		int maxWeekdays = 0;
 		for (int i = 0; i < RAs.size(); i++)
 		{
 			if (RAs.get(i).getWeekdaysWorked() > maxWeekdays)
@@ -273,6 +281,7 @@ public class Prioritize
 				maxWeekdays = RAs.get(i).getWeekdaysWorked();
 			}
 		}
+		return maxWeekdays;
 	}
 	
 	public static void run(Connection c, String sDate, String eDate, String outputFilePath) throws SQLException
@@ -297,7 +306,7 @@ public class Prioritize
 			System.out.println(RAs.get(i));
 		}
 		
-		equalise();
+		int[] maxArray = equalise();
 		
 //		for (int i = 0; i < dutyNights.size(); i++)
 //		{
@@ -315,8 +324,8 @@ public class Prioritize
 			System.out.println(RAs.get(i));
 		}
 		
-		System.out.println("maxWeekends = " + maxWeekends);
-		System.out.println("maxWeekdays = " + maxWeekdays);
+		System.out.println("maxWeekends = " + maxArray[0]);
+		System.out.println("maxWeekdays = " + maxArray[1]);
 		System.out.println("completed");
 		
 		// Output to file
@@ -345,12 +354,6 @@ public class Prioritize
 			
 			pw.close();
 			fw.close();
-			
-			File f = new File(outputFilePath);
-			if (Desktop.isDesktopSupported())
-			{
-				Desktop.getDesktop().edit(f);
-			}
 			
 		}
 		catch (IOException e)
