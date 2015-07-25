@@ -1,9 +1,7 @@
 package scheduler.ui;
 
 import java.sql.*;
-
 import java.time.LocalDateTime;
-
 import java.io.File;
 
 import javax.swing.JTable;
@@ -21,6 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
+import java.awt.Desktop;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
@@ -89,8 +88,14 @@ public class WorkPanel
 				}
 				else
 				{
-					Prioritize.run(c, sDate, eDate, workPanelGen.getOutputFileTextField().getText());
+					Prioritize.run(c, sDate, eDate, outputFilePath);
 					run = true;
+					
+					File f = new File(outputFilePath);
+					if (Desktop.isDesktopSupported())
+					{
+						Desktop.getDesktop().edit(f);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -298,6 +303,8 @@ public class WorkPanel
 				Statement stmt = c.createStatement();
 				String sql = ("UPDATE Resident_Assistants SET weekendsWorked = 0;");
 				stmt.executeUpdate(sql);
+				sql = ("UPDATE Resident_Assistants SET weekdaysWorked = 0;");
+				stmt.executeUpdate(sql);
 				updateRAListScrollPane(c, tableName);
 			}
 			catch (SQLException s)
@@ -341,7 +348,7 @@ public class WorkPanel
 		workPanelGen.getBrowseButton().addActionListener(new BrowseButtonListener());
 		workPanelGen.getCommitButton().addActionListener(new CommitButtonListener());
 		workPanelGen.getDevResetButton().addActionListener(new DevResetButtonListener());
-		workPanelGen.getOutputFileTextField().setText("C:\\Users\\Yash\\Desktop\\test10.txt");
+		workPanelGen.getOutputFileTextField().setText("C:\\Users\\Yash\\Desktop\\test20.txt");
 	}
 	
 //	private static JDatePickerImpl createStartDatePicker()
