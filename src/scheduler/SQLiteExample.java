@@ -99,26 +99,38 @@ public class SQLiteExample {
 //					"FOREIGN KEY (ID) REFERENCES Resident_Assistants(ID));";
 //			stmt.executeUpdate(sql);
 //			
-//			sql =	"CREATE TABLE unavailableDates" + 
+//			sql =	"CREATE TABLE unavailableNightDates" + 
 //					"(ID 			INT		NOT NULL," +
-//					"unavailableDate	DATE	NOT NULL," +
-//					"PRIMARY KEY (ID, unavailableDate)," +
+//					"unavailableNightDate	DATE	NOT NULL," +
+//					"PRIMARY KEY (ID, unavailableNightDate)," +
 //					"FOREIGN KEY (ID) REFERENCES Resident_Assistants(ID));";
 //			stmt.executeUpdate(sql);
 //
+//			sql =	"CREATE TABLE unavailableNights" + 
+//					"(ID 			INT		NOT NULL," +
+//					"unavailableNight	TEXT	NOT NULL," +
+//					"PRIMARY KEY (ID, unavailableNight)," +
+//					"FOREIGN KEY (ID) REFERENCES Resident_Assistants(ID));";
+//			stmt.executeUpdate(sql);
+//
+//			sql = 	"DROP TABLE unavailableNightDates;";
+//			stmt.executeUpdate(sql);
 //			
 //			sql =	"INSERT INTO unavailableDays (ID, unavailableDay) " +
 //					"VALUES (6, 'sunday'), (6, 'monday'), (6, 'tuesday'), (6, 'wednesday'), (6, 'thursday'), (6, 'friday'), (6, 'saturday');";
 //			stmt.executeUpdate(sql);
 //
-//			
-//			
-//			sql =	"INSERT INTO unavailableDates (ID, unavailableDate) " +
-//					"VALUES (1, '2015-07-08');";
+//	
+//			sql =	"INSERT INTO unavailableNights (ID, unavailableNight) " +
+//			"VALUES (9, 'sunday');";
 //			stmt.executeUpdate(sql);
 //			
-//			sql =	"INSERT INTO unavailableDates (ID, unavailableDate) " +
-//					"VALUES (1, '2015-07-23');";
+//			sql =	"INSERT INTO unavailableNightDates (ID, unavailableNightDate) " +
+//					"VALUES (1, '2015-08-08');";
+//			stmt.executeUpdate(sql);
+//			
+//			sql =	"INSERT INTO unavailableNightDates (ID, unavailableNightDate) " +
+//					"VALUES (1, '2015-08-23');";
 //			stmt.executeUpdate(sql);
 //			
 //			sql =	"INSERT INTO unavailableDates (ID, unavailableDate) " +
@@ -167,13 +179,17 @@ public class SQLiteExample {
 //			sql = "DROP TABLE unavailableDates;";
 //			stmt.executeUpdate(sql);
 //			
-			showAllRecords(c, "Resident_Assistants");
+//			showAllRecords(c, "Resident_Assistants");
+//			System.out.println("");
+//			showAllRecords(c, "unavailableDays");
+//			System.out.println("");
+//			showAllRecords(c, "unavailableDates");
+//			System.out.println("");
+//
+			showAllRecords(c, "unavailableNightDates");
 			System.out.println("");
-			showAllRecords(c, "unavailableDays");
+			showAllRecords(c, "unavailableNights");
 			System.out.println("");
-			showAllRecords(c, "unavailableDates");
-			System.out.println("");
-//			
 //			Print names of all tables
 //			DatabaseMetaData md = c.getMetaData();
 //			ResultSet rs2 = md.getTables(null, null, "%", null);

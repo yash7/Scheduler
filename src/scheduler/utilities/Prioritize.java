@@ -33,7 +33,7 @@ public class Prioritize
 			for (int k = 0; k < RAs.size(); k++)
 			{
 				RAObject tempRA = RAs.get(k);
-				if (!(tempRA.getUnavailableDays().contains(tempDW)) && !(tempRA.getUnavailableDates().contains(tempDate)))
+				if (!(tempRA.getUnavailableNights().contains(tempDW)) && !(tempRA.getUnavailableNightDates().contains(tempDate)))
 				{
 //					if (tempDutyNight.getRA1() == null)
 //					{
@@ -72,8 +72,8 @@ public class Prioritize
 			tempRA.setWeekendsWorked(rs.getInt("weekendsWorked"));
 			// Remove hardcoding
 			int ID = rs.getInt("ID");
-			tempRA.setUnavailableDays(obtainUnavailableDays(c, "unavailableDays", ID));
-			tempRA.setUnavailableDates(obtainUnavailableDates(c, "unavailableDates", ID));
+			tempRA.setUnavailableNights(obtainUnavailableNights(c, "unavailableNights", ID));
+			tempRA.setUnavailableNightDates(obtainUnavailableNightDates(c, "unavailableNightDates", ID));
 			RAList.add(tempRA);
 		}
 		
@@ -102,39 +102,39 @@ public class Prioritize
 	}
 	
 	
-	private static ArrayList<DayOfWeek> obtainUnavailableDays (Connection c, String tableName, int ID) throws SQLException
+	private static ArrayList<DayOfWeek> obtainUnavailableNights (Connection c, String tableName, int ID) throws SQLException
 	{
 		
-		ArrayList<DayOfWeek> unavailableDays = new ArrayList<DayOfWeek>();
+		ArrayList<DayOfWeek> unavailableNights = new ArrayList<DayOfWeek>();
 		
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM " + tableName + " where ID = " + ID + ";");
+		ResultSet rs = stmt.executeQuery("SELECT unavailableNight FROM " + tableName + " where ID = " + ID + ";");
 		
 		while(rs.next())
 		{
-			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableDay"));
-			unavailableDays.add(dw);
+			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableNight"));
+			unavailableNights.add(dw);
 		}
 		
-		return unavailableDays;
+		return unavailableNights;
 		
 	}
 	
-	private static ArrayList<LocalDate> obtainUnavailableDates (Connection c, String tableName, int ID) throws SQLException
+	private static ArrayList<LocalDate> obtainUnavailableNightDates (Connection c, String tableName, int ID) throws SQLException
 	{
 		
-		ArrayList<LocalDate> unavailableDates = new ArrayList<LocalDate>();
+		ArrayList<LocalDate> unavailableNightDates = new ArrayList<LocalDate>();
 		
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDate FROM " + tableName + " where ID = " + ID + ";");
+		ResultSet rs = stmt.executeQuery("SELECT unavailableNightDate FROM " + tableName + " where ID = " + ID + ";");
 		
 		while(rs.next())
 		{
-			LocalDate ld = RAObject.getLocalDateFromString(rs.getString("unavailableDate"));
-			unavailableDates.add(ld);
+			LocalDate ld = RAObject.getLocalDateFromString(rs.getString("unavailableNightDate"));
+			unavailableNightDates.add(ld);
 		}
 		
-		return unavailableDates;
+		return unavailableNightDates;
 		
 	}
 	

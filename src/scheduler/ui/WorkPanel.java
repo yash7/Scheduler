@@ -51,10 +51,10 @@ public class WorkPanel
 				int ID = (int) table.getValueAt(table.getSelectedRow(), 0);
 				try
 				{
-					JTable unDaysTable = WorkPanel.updateUnDaysScrollPane(c, tableName, ID);
-					workPanelGen.getUnDaysScrollPane().setViewportView(unDaysTable);
-					JTable unDatesTable = WorkPanel.updateUnDatesScrollPane(c, tableName, ID);
-					workPanelGen.getUnDatesScrollPane().setViewportView(unDatesTable);
+					JTable unNightsTable = WorkPanel.updateUnNightsScrollPane(c, tableName, ID);
+					workPanelGen.getUnNightsScrollPane().setViewportView(unNightsTable);
+					JTable unNightDatesTable = WorkPanel.updateUnNightDatesScrollPane(c, tableName, ID);
+					workPanelGen.getUnNightDatesScrollPane().setViewportView(unNightDatesTable);
 				}
 				catch (SQLException s)
 				{
@@ -229,15 +229,15 @@ public class WorkPanel
 					try
 					{
 						Statement stmt = c.createStatement();
-						String sql = ("DELETE FROM unavailableDays WHERE ID = " + ID + ";");
+						String sql = ("DELETE FROM unavailableNights WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
-						sql = ("DELETE FROM unavailableDates WHERE ID = " + ID + ";");
+						sql = ("DELETE FROM unavailableNightDates WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
 						sql = ("DELETE FROM " + tableName + " WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
 						updateRAListScrollPane(c, tableName);
-						workPanelGen.getUnDaysScrollPane().setViewportView(null);
-						workPanelGen.getUnDatesScrollPane().setViewportView(null);
+						workPanelGen.getUnNightsScrollPane().setViewportView(null);
+						workPanelGen.getUnNightDatesScrollPane().setViewportView(null);
 					}
 					catch (SQLException s)
 					{
@@ -273,7 +273,7 @@ public class WorkPanel
 		{
 			if (run) // Implement other checks
 			{
-				int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to implement the new days worked in the database?", "Confirm changes", JOptionPane.YES_NO_OPTION);
+				int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to implement the new days and nights worked in the database?", "Confirm changes", JOptionPane.YES_NO_OPTION);
 				
 				if (dialogResult == JOptionPane.YES_OPTION)
 				{
@@ -399,20 +399,20 @@ public class WorkPanel
 		
 	}
 	
-	public static JTable updateUnDaysScrollPane(Connection c, String tableName, int ID) throws SQLException
+	public static JTable updateUnNightsScrollPane(Connection c, String tableName, int ID) throws SQLException
 	{
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM unavailableDays where ID = " + ID + ";"); // Fix tableName 
+		ResultSet rs = stmt.executeQuery("SELECT unavailableNight FROM unavailableNights where ID = " + ID + ";"); // Fix tableName 
 		
 		JTable table = new JTable(buildTableModel(rs));
 		
 		return table;
 	}
 	
-	public static JTable updateUnDatesScrollPane(Connection c, String tableName, int ID) throws SQLException
+	public static JTable updateUnNightDatesScrollPane(Connection c, String tableName, int ID) throws SQLException
 	{
 		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDate FROM unavailableDates where ID = " + ID + ";"); // Fix tableName 
+		ResultSet rs = stmt.executeQuery("SELECT unavailableNightDate FROM unavailableNightDates where ID = " + ID + ";"); // Fix tableName 
 		
 		JTable table = new JTable(buildTableModel(rs));
 		

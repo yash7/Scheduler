@@ -15,7 +15,9 @@ public class RAObject
 //	private static int universalID = 0;
 //	private int ID;
 	private String name;
-	private ArrayList<LocalDate> unavailableDates;
+	private ArrayList<LocalDate> unavailableNightDates;
+	private ArrayList<DayOfWeek> unavailableNights;
+	private ArrayList<LocalDate> unavailableDayDates; 
 	private ArrayList<DayOfWeek> unavailableDays;
 	private int weekendsWorked;
 	private int weekdaysWorked;
@@ -25,7 +27,9 @@ public class RAObject
 	{
 //		universalID++;
 //		ID = universalID;
-		unavailableDates = new ArrayList<LocalDate>();
+		unavailableNightDates = new ArrayList<LocalDate>();
+		unavailableNights = new ArrayList<DayOfWeek>();
+		unavailableDayDates = new ArrayList<LocalDate>();
 		unavailableDays = new ArrayList<DayOfWeek>();
 		weekendsWorked = 0;
 		weekdaysWorked = 0;
@@ -41,16 +45,26 @@ public class RAObject
 		return name;
 	}
 	
-	public ArrayList<LocalDate> getUnavailableDates() 
+	public ArrayList<LocalDate> getUnavailableNightDates() 
 	{
-		return unavailableDates;
+		return unavailableNightDates;
 	}
 	
-	public ArrayList<DayOfWeek> getUnavailableDays()
+	public ArrayList<DayOfWeek> getUnavailableNights()
 	{
-		return unavailableDays;
+		return unavailableNights;
 	}
 	
+//	public ArrayList<LocalDate> getUnavailableDayDates()
+//	{
+//		return unavailableDayDates;
+//	}
+//	
+//	public ArrayList<DayOfWeek> getUnavailableDays()
+//	{
+//		return unavailableDays;
+//	}
+//	
 	public int getWeekendsWorked()
 	{
 		return weekendsWorked;
@@ -66,28 +80,68 @@ public class RAObject
 		name = n;
 	}
 	
-	public void setUnavailableDates(ArrayList<LocalDate> unDates)
+	public void setUnavailableNightDates(ArrayList<LocalDate> unNDates)
 	{
-		unavailableDates = unDates;
+		unavailableNightDates = unNDates;
 	}
 	
-	public void setUnavailableDays(ArrayList<DayOfWeek> unDays)
+	public void setUnavailableNights(ArrayList<DayOfWeek> unNights)
 	{
-		unavailableDays = unDays;
+		unavailableNights = unNights;
 	}
 	
-	public void addUnavailableDate(LocalDate ld)
+	public void addUnavailableNightDate(LocalDate ld)
 	{
-		unavailableDates.add(ld);
+		unavailableNightDates.add(ld);
 	}
 	
-	public void addUnavailableDates(ArrayList<LocalDate> ldList)
+	public void addUnavailableNightDates(ArrayList<LocalDate> ldList)
 	{
-		unavailableDates.addAll(ldList);
+		unavailableNightDates.addAll(ldList);
 	}
 	
+	public void addUnavailableNight(String sdw)
+	{
+		DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(sdw);
+		
+		if (!(unavailableNights.contains(dw)))
+		{
+			unavailableNights.add(dw);
+		}
+	}
+
 	
-	
+	// Remember to uncomment
+//	public void setUnavailableDayDates(ArrayList<LocalDate> unDDates)
+//	{
+//		unavailableDayDates = unDDates;
+//	}
+//	
+//	public void setUnavailableDays(ArrayList<DayOfWeek> unDays)
+//	{
+//		unavailableDays = unDays;
+//	}
+//	
+//	public void addUnavailableDayDate(LocalDate ld)
+//	{
+//		unavailableDayDates.add(ld);
+//	}
+//	
+//	public void addUnavailableDayDates(ArrayList<LocalDate> ldList)
+//	{
+//		unavailableDayDates.addAll(ldList);
+//	}
+//	
+//	public void addUnavailableDay(String sdw)
+//	{
+//		DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(sdw);
+//		
+//		if (!(unavailableDays.contains(dw)))
+//		{
+//			unavailableDays.add(dw);
+//		}
+//	}
+//	
 	public static LocalDate getLocalDateFromString (String sdw)
 	{
 		
@@ -100,16 +154,6 @@ public class RAObject
 		
 		return ld;
 		
-	}
-	
-	public void addUnavailableDay(String sdw)
-	{
-		DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(sdw);
-		
-		if (!(unavailableDays.contains(dw)))
-		{
-			unavailableDays.add(dw);
-		}
 	}
 	
 	public void setWeekendsWorked(int ww)
