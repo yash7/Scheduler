@@ -361,7 +361,7 @@ public class WorkPanel
 		workPanelGen.getBrowseButton().addActionListener(new BrowseButtonListener());
 		workPanelGen.getCommitButton().addActionListener(new CommitButtonListener());
 		workPanelGen.getDevResetButton().addActionListener(new DevResetButtonListener());
-		workPanelGen.getOutputFileTextField().setText("C:\\Users\\Yash\\Desktop\\test20.txt");
+		workPanelGen.getOutputFileTextField().setText("C:\\Users\\Yash\\Desktop\\test" + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + ".txt");
 	}
 	
 //	private static JDatePickerImpl createStartDatePicker()

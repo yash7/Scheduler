@@ -140,7 +140,7 @@ public class DutyNight // Rename to DutyShift
 		
 		// s = (s + "\n");
 		
-		return s;
+		return s + " " + shift;
 	}
 
 }

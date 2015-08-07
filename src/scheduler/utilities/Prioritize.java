@@ -229,7 +229,7 @@ public class Prioritize
 			DayOfWeek tempDW = tempDN.getDate().getDayOfWeek();
 			ArrayList<RAObject> availableRAs = tempDN.getAvailableRAs();
 			
-			if(tempDW.equals(DayOfWeek.of(5)) || tempDW.equals(DayOfWeek.of(6)))
+			if ((tempDW.equals(DayOfWeek.of(5)) || tempDW.equals(DayOfWeek.of(6))) && tempDN.getShift() == 2)
 			{
 				if (availableRAs.size() == 0)
 				{
@@ -490,15 +490,16 @@ public class Prioritize
 		LocalDate endDate = RAObject.getLocalDateFromString(eDate);
 		
 		dutyNights = getDutyList(startDate, endDate);
-		for (int i = 0; i < dutyNights.size(); i++)
-		{
-			DutyNight tempDN = dutyNights.get(i);
-			//System.out.println(tempDN.getDate().toString() + " " + tempDN.getDate().getDayOfWeek().toString() + " " + tempDN.getShift());
-			System.out.println(tempDN);
-		}
-		
-		
-		System.exit(0);
+
+//		for (int i = 0; i < dutyNights.size(); i++)
+//		{
+//			DutyNight tempDN = dutyNights.get(i);
+//			//System.out.println(tempDN.getDate().toString() + " " + tempDN.getDate().getDayOfWeek().toString() + " " + tempDN.getShift());
+//			System.out.println(tempDN);
+//		}
+//		
+//		
+//		System.exit(0);
 		
 		
 		for (int i = 0; i < dutyNights.size(); i++)
@@ -580,22 +581,22 @@ public class Prioritize
 			
 			if (ra1 == null)
 			{
-				pw.print(date + " " + date.getDayOfWeek().toString() + " ");
+				pw.print(date + " " + date.getDayOfWeek().toString() + " " + tempDN.getShift() + " ");
 			}
 			else if (ra2 == null)
 			{
-				pw.println(date + " " + date.getDayOfWeek().toString());
+				pw.println(date + " " + date.getDayOfWeek().toString() + " " + tempDN.getShift());
 				pw.print(ra1.getName());
 			}
 			else if (alternateRAs.size() == 0)
 			{
-				pw.println(date + " " + date.getDayOfWeek().toString());
+				pw.println(date + " " + date.getDayOfWeek().toString() + " " + tempDN.getShift());
 				pw.println(ra1.getName());
 				pw.print(ra2.getName());
 			}
 			else
 			{
-				pw.println(date + " " + date.getDayOfWeek().toString());
+				pw.println(date + " " + date.getDayOfWeek().toString() + " " + tempDN.getShift());
 				pw.println(ra1.getName());
 				pw.println(ra2.getName());
 				pw.print("Alternates:");
@@ -609,12 +610,6 @@ public class Prioritize
 			pw.println();
 		}
 	}
-	
-	// Implement weekdays
-	// To implement day duties, have special variables for every RA that determine whether they are available 
-	// for day duty SAT SUN or not, then when iterating through the dates, if a day is SAT or SUN, treat it 
-	// as 1 day shift (weekday) and 1 weekend shift instead of 1 total shift. The day shift looks at the RAs variables
-	// (and not the unavailable weekdays). The weekend shift looks at the RAs unavailability as usual. 
-	// Also add unavailable dates for day duty (for example 2015-09-02D) means they are unavailable for the day of 
-	// 2nd September, not necessarily night.
+	// Implement single RA Day Duty shifts
+
 }
