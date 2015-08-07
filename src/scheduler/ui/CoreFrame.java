@@ -13,7 +13,7 @@ public class CoreFrame extends JFrame
 {
 
 	private static final int WIDTH = 1000;
-	private static final int HEIGHT = 725;
+	private static final int HEIGHT = 800;
 	
 	private JPanel contentPane;
 	private WorkPanel workPanel;

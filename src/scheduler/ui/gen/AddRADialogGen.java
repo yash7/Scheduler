@@ -45,12 +45,18 @@ public class AddRADialogGen extends JDialog {
 	
 	class CancelButtonListener implements ActionListener
 	{
-		public void actionPerformed(ActionEvent e)
+		public void actionPerformed(ActionEvent e) // Make confirm dialog appear only if changes are made. For Edit as well.
 		{
-			dispose();
+			int dg = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?", "Discard changes", JOptionPane.YES_NO_OPTION);
+			
+			if (dg == JOptionPane.YES_OPTION)
+			{
+				dispose();
+			}
 		}
 	}
 	
+	// come back to this for weekdays
 	class AddRAOkButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -59,7 +65,9 @@ public class AddRADialogGen extends JDialog {
 			
 			if(name.compareTo("") == 0)
 			{
-				dispose(); // add dialog box showing warning
+				JOptionPane.showMessageDialog(null, "Please enter a valid name.", "Invalid name", JOptionPane.ERROR_MESSAGE);
+				
+				// dispose(); // add dialog box showing warning
 			}
 			else
 			{
@@ -68,8 +76,18 @@ public class AddRADialogGen extends JDialog {
 					Statement stmt = c.createStatement();
 					ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName + " ORDER BY ID DESC LIMIT 1;"); // to get last record
 					
-					int lastID = (rs.getInt("ID"));
-					int newID = ++lastID;
+					int newID = 0;
+					
+					if (!rs.next())
+					{
+						System.out.println("No data");
+						newID = 1;
+					}
+					else
+					{
+						int lastID = (rs.getInt("ID"));
+						newID = ++lastID;
+					}
 					
 					addRA(name, newID, stmt);
 					
@@ -96,7 +114,7 @@ public class AddRADialogGen extends JDialog {
 		int unNightsListSize = raDetailPanelGen.getUnavailableNightsListModel().getSize();
 		if (unNightsListSize > 0)
 		{
-			for (int i=0; i<unNightsListSize; i++)
+			for (int i = 0; i < unNightsListSize; i++)
 			{
 				String tempNight = raDetailPanelGen.getUnavailableNightsListModel().get(i).toString();
 				sql = 	"INSERT INTO unavailableNights (ID, unavailableNight) " +
@@ -116,8 +134,33 @@ public class AddRADialogGen extends JDialog {
 				stmt.execute(sql);
 			}
 		}
+		
+		int unDaysListSize = raDetailPanelGen.getUnavailableDaysListModel().getSize();
+		if (unDaysListSize > 0)
+		{
+			for (int i = 0; i < unDaysListSize; i++)
+			{
+				String tempDay = raDetailPanelGen.getUnavailableDaysListModel().get(i).toString();
+				sql = 	"INSERT INTO unavailableDays (ID, unavailableDay) " +
+						"VALUES (" + ID + ", '" + tempDay.toLowerCase() + "');";
+				stmt.execute(sql);
+			}
+		}
+		
+		int unDayDatesListSize = raDetailPanelGen.getUnavailableDayDatesListModel().getSize();
+		if (unDayDatesListSize > 0)
+		{
+			for (int i = 0; i < unDayDatesListSize; i++)
+			{
+				String tempDayDate = raDetailPanelGen.getUnavailableDayDatesListModel().get(i);
+				sql = 	"INSERT INTO unavailableDayDates (ID, unavailableDayDate) " +
+						"VALUES (" + ID + ", '" + tempDayDate + "');";
+				stmt.execute(sql);
+			}
+		}
 	}
 	
+	// Implement Day changes in Edit
 	class EditRAOkButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -140,6 +183,10 @@ public class AddRADialogGen extends JDialog {
 						String sql = ("DELETE FROM unavailableNights WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
 						sql = ("DELETE FROM unavailableNightDates WHERE ID = " + ID + ";");
+						stmt.executeUpdate(sql);
+						sql = ("DELETE FROM unavailableDays WHERE ID = " + ID + ";");
+						stmt.executeUpdate(sql);
+						sql = ("DELETE FROM unavailableDayDates WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
 						sql = ("DELETE FROM " + tableName + " WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
@@ -177,7 +224,8 @@ public class AddRADialogGen extends JDialog {
 		
 		initContentPanel();
 		
-		newRAUnavailableNights();
+		newRAAvailableNights();
+		newRAAvailableDays();
 
 		initButtonPane();
 		
@@ -191,7 +239,7 @@ public class AddRADialogGen extends JDialog {
 	
 	private void initDialog()
 	{
-		setBounds(100, 100, 500, 600);
+		setBounds(100, 100, 825, 600);
 		getContentPane().setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -207,12 +255,18 @@ public class AddRADialogGen extends JDialog {
 		contentPanel.add(raDetailPanelGen);
 	}
 	
-	private void newRAUnavailableNights()
+	private void newRAAvailableNights()
 	{
-		for (int i=1; i<=7; i++)
+		for (int i = 1; i<=7; i++)
 		{
 			raDetailPanelGen.getAvailableNightsListModel().addElement(DayOfWeek.of(i));
 		}
+	}
+	
+	private void newRAAvailableDays()
+	{
+		raDetailPanelGen.getAvailableDaysListModel().addElement(DayOfWeek.of(6));
+		raDetailPanelGen.getAvailableDaysListModel().addElement(DayOfWeek.of(7));
 	}
 	
 	private void initButtonPane()
@@ -251,13 +305,11 @@ public class AddRADialogGen extends JDialog {
 		raDetailPanelGen.getWeekdaysWorkedTextField().setText(Integer.toString(weekdaysWorked));
 		
 		rs = stmt.executeQuery("SELECT unavailableNight FROM unavailableNights WHERE ID = " + ID + ";");
-		
 		while (rs.next())
 		{
 			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableNight"));
 			raDetailPanelGen.getUnavailableNightsListModel().addElement(dw);
 		}
-		
 		for (int i=1; i<=7; i++)
 		{
 			DayOfWeek dw = DayOfWeek.of(i);
@@ -268,12 +320,32 @@ public class AddRADialogGen extends JDialog {
 		}
 		
 		rs = stmt.executeQuery("SELECT unavailableNightDate FROM unavailableNightDates where ID = " + ID + ";");
-		
 		while (rs.next())
 		{
 			raDetailPanelGen.getUnavailableNightDatesListModel().addElement(rs.getString("unavailableNightDate"));
 		}
 		
+		rs = stmt.executeQuery("SELECT unavailableDay FROM unavailableDays WHERE ID = " + ID + ";");
+		while (rs.next())
+		{
+			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableDay"));
+			raDetailPanelGen.getUnavailableDaysListModel().addElement(dw);
+		}
+		for (int i = 6; i <= 7; i++)
+		{
+			DayOfWeek dw = DayOfWeek.of(i);
+			if (!(raDetailPanelGen.getUnavailableDaysListModel().contains(dw)))
+			{
+				raDetailPanelGen.getAvailableDaysListModel().addElement(dw);
+			}
+		}
+		
+		rs = stmt.executeQuery("SELECT unavailableDayDate FROM unavailableDayDates where ID = " + ID + ";");
+		while (rs.next())
+		{
+			raDetailPanelGen.getUnavailableDayDatesListModel().addElement(rs.getString("unavailableDayDate"));
+		}
+
 //		System.out.print(weekendsWorked);
 //		System.out.print(" ");
 //		System.out.println(weekdaysWorked);

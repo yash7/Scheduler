@@ -53,8 +53,15 @@ public class WorkPanel
 				{
 					JTable unNightsTable = WorkPanel.updateUnNightsScrollPane(c, tableName, ID);
 					workPanelGen.getUnNightsScrollPane().setViewportView(unNightsTable);
+					
 					JTable unNightDatesTable = WorkPanel.updateUnNightDatesScrollPane(c, tableName, ID);
 					workPanelGen.getUnNightDatesScrollPane().setViewportView(unNightDatesTable);
+					
+					JTable unDaysTable = WorkPanel.updateUnDaysScrollPane(c, tableName, ID);
+					workPanelGen.getUnDaysScrollPane().setViewportView(unDaysTable);
+					
+					JTable unDayDatesTable = WorkPanel.updateUnDayDatesScrollPane(c, tableName, ID);
+					workPanelGen.getUnDayDatesScrollPane().setViewportView(unDayDatesTable);
 				}
 				catch (SQLException s)
 				{
@@ -132,7 +139,7 @@ public class WorkPanel
 			
 			if (selectedRow < 0)
 			{
-				
+				JOptionPane.showMessageDialog(null, "You must select an RA.", "No RA selected", JOptionPane.OK_OPTION); // fix parent components for all dialogs everywhere
 			}
 			else
 			{
@@ -216,7 +223,7 @@ public class WorkPanel
 			
 			if (selectedRow < 0)
 			{
-				
+				JOptionPane.showMessageDialog(null, "You must select an RA.", "No RA selected", JOptionPane.OK_OPTION); // fix parent components for all dialogs everywhere
 			}
 			else
 			{
@@ -233,11 +240,17 @@ public class WorkPanel
 						stmt.executeUpdate(sql);
 						sql = ("DELETE FROM unavailableNightDates WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
+						sql = ("DELETE FROM unavailableDays WHERE ID = " + ID + ";");
+						stmt.executeUpdate(sql);
+						sql = ("DELETE FROM unavailableDayDates WHERE ID = " + ID + ";");
+						stmt.executeUpdate(sql);
 						sql = ("DELETE FROM " + tableName + " WHERE ID = " + ID + ";");
 						stmt.executeUpdate(sql);
 						updateRAListScrollPane(c, tableName);
 						workPanelGen.getUnNightsScrollPane().setViewportView(null);
 						workPanelGen.getUnNightDatesScrollPane().setViewportView(null);
+						workPanelGen.getUnDaysScrollPane().setViewportView(null);
+						workPanelGen.getUnDayDatesScrollPane().setViewportView(null);
 					}
 					catch (SQLException s)
 					{
@@ -419,6 +432,25 @@ public class WorkPanel
 		return table;
 	}
 	
+	public static JTable updateUnDaysScrollPane(Connection c, String tableName, int ID) throws SQLException
+	{
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM unavailableDays where ID = " + ID + ";"); // Fix tableName 
+		
+		JTable table = new JTable(buildTableModel(rs));
+		
+		return table;
+	}
+	
+	public static JTable updateUnDayDatesScrollPane(Connection c, String tableName, int ID) throws SQLException
+	{
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT unavailableDayDate FROM unavailableDayDates where ID = " + ID + ";"); // Fix tableName 
+		
+		JTable table = new JTable(buildTableModel(rs));
+		
+		return table;
+	}
 	
 	public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException
 	{

@@ -27,31 +27,72 @@ public class Prioritize
 		LocalDate tempDate = startDate;
 		for (int j = 0; j <= i; j++)
 		{
-			DutyNight tempDutyNight = new DutyNight();
-			tempDutyNight.setDate(tempDate);
 			DayOfWeek tempDW = tempDate.getDayOfWeek();
-			for (int k = 0; k < RAs.size(); k++)
+			
+			if (tempDW.equals(DayOfWeek.of(6)) || tempDW.equals(DayOfWeek.of(7))) // refactor with DutyDay objects
 			{
-				RAObject tempRA = RAs.get(k);
-				if (!(tempRA.getUnavailableNights().contains(tempDW)) && !(tempRA.getUnavailableNightDates().contains(tempDate)))
+				DutyNight tempDutyDay = new DutyNight(1);
+				tempDutyDay.setDate(tempDate);
+				for (int k = 0; k < RAs.size(); k++)
 				{
-//					if (tempDutyNight.getRA1() == null)
-//					{
-//						tempDutyNight.setRA1(tempRA);
-//					}
-//					else if (tempDutyNight.getRA2() == null)
-//					{
-//						tempDutyNight.setRA2(tempRA);
-//					}
-//					else
-//					{
-//						tempDutyNight.getAlternateRAs().add(tempRA);
-//					}
-					tempDutyNight.getAvailableRAs().add(tempRA);
+					RAObject tempRA = RAs.get(k);
+					if (!(tempRA.getUnavailableDays().contains(tempDW)) && !(tempRA.getUnavailableDayDates().contains(tempDate)))
+					{
+						tempDutyDay.getAvailableRAs().add(tempRA);
+					}
 				}
+				dutyList.add(tempDutyDay);
+				
+				DutyNight tempDutyNight = new DutyNight(2);
+				tempDutyNight.setDate(tempDate);
+				for (int k = 0; k < RAs.size(); k++)
+				{
+					RAObject tempRA = RAs.get(k);
+					if (!(tempRA.getUnavailableNights().contains(tempDW)) && !(tempRA.getUnavailableNightDates().contains(tempDate)))
+					{
+						tempDutyNight.getAvailableRAs().add(tempRA);
+					}
+				}
+				dutyList.add(tempDutyNight);
+			}			
+			else
+			{
+				DutyNight tempDutyNight = new DutyNight(2);
+				tempDutyNight.setDate(tempDate);
+				for (int k = 0; k < RAs.size(); k++)
+				{
+					RAObject tempRA = RAs.get(k);
+					if (!(tempRA.getUnavailableNights().contains(tempDW)) && !(tempRA.getUnavailableNightDates().contains(tempDate)))
+					{
+						tempDutyNight.getAvailableRAs().add(tempRA);
+					}
+				}
+				dutyList.add(tempDutyNight);
 			}
-			dutyList.add(tempDutyNight);
 			tempDate = tempDate.plusDays(1);
+			
+//			for (int k = 0; k < RAs.size(); k++)
+//			{
+//				RAObject tempRA = RAs.get(k);
+//				if (!(tempRA.getUnavailableNights().contains(tempDW)) && !(tempRA.getUnavailableNightDates().contains(tempDate)))
+//				{
+////					if (tempDutyNight.getRA1() == null)
+////					{
+////						tempDutyNight.setRA1(tempRA);
+////					}
+////					else if (tempDutyNight.getRA2() == null)
+////					{
+////						tempDutyNight.setRA2(tempRA);
+////					}
+////					else
+////					{
+////						tempDutyNight.getAlternateRAs().add(tempRA);
+////					}
+//					tempDutyNight.getAvailableRAs().add(tempRA);
+//				}
+//			}
+//			dutyList.add(tempDutyNight);
+//			tempDate = tempDate.plusDays(1);
 		}
 		
 		return dutyList;
@@ -72,6 +113,8 @@ public class Prioritize
 			tempRA.setWeekendsWorked(rs.getInt("weekendsWorked"));
 			// Remove hardcoding
 			int ID = rs.getInt("ID");
+			tempRA.setUnavailableDays(obtainUnavailableDays(c, "unavailableDays", ID));
+			tempRA.setUnavailableDayDates(obtainUnavailableDayDates(c, "unavailableDayDates", ID));
 			tempRA.setUnavailableNights(obtainUnavailableNights(c, "unavailableNights", ID));
 			tempRA.setUnavailableNightDates(obtainUnavailableNightDates(c, "unavailableNightDates", ID));
 			RAList.add(tempRA);
@@ -101,6 +144,41 @@ public class Prioritize
 		}
 	}
 	
+	private static ArrayList<DayOfWeek> obtainUnavailableDays (Connection c, String tableName, int ID) throws SQLException
+	{
+		
+		ArrayList<DayOfWeek> unavailableDays = new ArrayList<DayOfWeek>();
+		
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM " + tableName + " where ID = " + ID + ";");
+		
+		while(rs.next())
+		{
+			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableDay"));
+			unavailableDays.add(dw);
+		}
+		
+		return unavailableDays;
+		
+	}
+	
+	private static ArrayList<LocalDate> obtainUnavailableDayDates (Connection c, String tableName, int ID) throws SQLException
+	{
+		
+		ArrayList<LocalDate> unavailableDayDates = new ArrayList<LocalDate>();
+		
+		Statement stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT unavailableDayDate FROM " + tableName + " where ID = " + ID + ";");
+		
+		while(rs.next())
+		{
+			LocalDate ld = RAObject.getLocalDateFromString(rs.getString("unavailableDayDate"));
+			unavailableDayDates.add(ld);
+		}
+		
+		return unavailableDayDates;
+		
+	}
 	
 	private static ArrayList<DayOfWeek> obtainUnavailableNights (Connection c, String tableName, int ID) throws SQLException
 	{
@@ -412,6 +490,16 @@ public class Prioritize
 		LocalDate endDate = RAObject.getLocalDateFromString(eDate);
 		
 		dutyNights = getDutyList(startDate, endDate);
+		for (int i = 0; i < dutyNights.size(); i++)
+		{
+			DutyNight tempDN = dutyNights.get(i);
+			//System.out.println(tempDN.getDate().toString() + " " + tempDN.getDate().getDayOfWeek().toString() + " " + tempDN.getShift());
+			System.out.println(tempDN);
+		}
+		
+		
+		System.exit(0);
+		
 		
 		for (int i = 0; i < dutyNights.size(); i++)
 		{

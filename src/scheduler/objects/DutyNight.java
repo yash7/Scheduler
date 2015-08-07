@@ -11,11 +11,13 @@ public class DutyNight // Rename to DutyShift
 	private RAObject ra2;
 	private ArrayList<RAObject> alternateRAs;
 	private ArrayList<RAObject> availableRAs;
+	private int shift;
 	
-	public DutyNight()
+	public DutyNight(int shift)
 	{
 		alternateRAs = new ArrayList<RAObject>();
 		availableRAs = new ArrayList<RAObject>();
+		this.shift = shift;
 	}
 	
 	public LocalDate getDate()
@@ -43,6 +45,11 @@ public class DutyNight // Rename to DutyShift
 		return availableRAs;
 	}
 	
+	public int getShift()
+	{
+		return shift;
+	}
+	
 	public void setDate(LocalDate ld)
 	{
 		date = ld;
@@ -61,6 +68,11 @@ public class DutyNight // Rename to DutyShift
 	public void addAlternateRA(RAObject ra)
 	{
 		alternateRAs.add(ra);
+	}
+	
+	public void setShift(int s)
+	{
+		shift = s;
 	}
 	
 	public String toString() // check for nulls
@@ -96,7 +108,7 @@ public class DutyNight // Rename to DutyShift
 			s = (s + " " + availableRAs.get(i).getName());  
 		}
 		
-		return s;
+		return s + " " + shift;
 	}
 	
 	public String toString2()
