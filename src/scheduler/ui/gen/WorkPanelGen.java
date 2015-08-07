@@ -16,8 +16,8 @@ import javax.swing.JTextField;
 public class WorkPanelGen extends JPanel 
 {
 	private JScrollPane RAListScrollPane;
-	private JScrollPane UnDaysScrollPane;
-	private JScrollPane UnDatesScrollPane;
+	private JScrollPane UnNightsScrollPane;
+	private JScrollPane UnNightDatesScrollPane;
 	private JPanel StartDatePanel;
 	private JPanel EndDatePanel;
 	private JDatePickerImpl startDatePicker;
@@ -32,8 +32,8 @@ public class WorkPanelGen extends JPanel
 	private JButton CommitButton;
 	private JLabel EndDateLabel;
 	private JLabel SaveFileLabel;
-	private JLabel UnDaysLabel;
-	private JLabel UnDatesLabel;
+	private JLabel UnNightsLabel;
+	private JLabel UnNightDatesLabel;
 	private JLabel RALabel;
 	private JButton DevResetButton;
 	
@@ -54,13 +54,13 @@ public class WorkPanelGen extends JPanel
 		RAListScrollPane.setBounds(46, 94, 476, 241);
 		MainPanel.add(RAListScrollPane);
 		
-		UnDaysScrollPane = new JScrollPane();
-		UnDaysScrollPane.setBounds(46, 458, 210, 189);
-		MainPanel.add(UnDaysScrollPane);
+		UnNightsScrollPane = new JScrollPane();
+		UnNightsScrollPane.setBounds(46, 458, 210, 189);
+		MainPanel.add(UnNightsScrollPane);
 		
-		UnDatesScrollPane = new JScrollPane();
-		UnDatesScrollPane.setBounds(312, 458, 210, 189);
-		MainPanel.add(UnDatesScrollPane);
+		UnNightDatesScrollPane = new JScrollPane();
+		UnNightDatesScrollPane.setBounds(312, 458, 210, 189);
+		MainPanel.add(UnNightDatesScrollPane);
 		
 		StartDatePanel = new JPanel();
 		StartDatePanel.setBounds(635, 94, 304, 43);
@@ -145,13 +145,13 @@ public class WorkPanelGen extends JPanel
 		SaveFileLabel.setBounds(566, 329, 141, 30);
 		MainPanel.add(SaveFileLabel);
 		
-		UnDaysLabel = new JLabel("Unavailable Days:");
-		UnDaysLabel.setBounds(46, 422, 148, 30);
-		MainPanel.add(UnDaysLabel);
+		UnNightsLabel = new JLabel("Unavailable Nights:");
+		UnNightsLabel.setBounds(46, 422, 148, 30);
+		MainPanel.add(UnNightsLabel);
 		
-		UnDatesLabel = new JLabel("Unavailable Dates:");
-		UnDatesLabel.setBounds(312, 420, 148, 30);
-		MainPanel.add(UnDatesLabel);
+		UnNightDatesLabel = new JLabel("Unavailable Night Dates:");
+		UnNightDatesLabel.setBounds(312, 420, 148, 30);
+		MainPanel.add(UnNightDatesLabel);
 		
 		RALabel = new JLabel("Resident Assistants on Database:");
 		RALabel.setBounds(46, 58, 210, 30);
@@ -209,13 +209,13 @@ public class WorkPanelGen extends JPanel
 	{
 		return RAListScrollPane;
 	}
-	public JScrollPane getUnDaysScrollPane() 
+	public JScrollPane getUnNightsScrollPane() 
 	{
-		return UnDaysScrollPane;
+		return UnNightsScrollPane;
 	}
-	public JScrollPane getUnDatesScrollPane() 
+	public JScrollPane getUnNightDatesScrollPane() 
 	{
-		return UnDatesScrollPane;
+		return UnNightDatesScrollPane;
 	}
 	public JPanel getStartDatePanel() 
 	{

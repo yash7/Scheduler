@@ -23,100 +23,100 @@ import org.sqlite.SQLiteConfig;
 public class Scheduler 
 {
 		
-	public static ArrayList<DutyNight> run(LocalDate startDate, LocalDate endDate, ArrayList<RAObject> RAs)
-	{
-		ArrayList<DutyNight> dutyList = new ArrayList<DutyNight>();
-		
-		long i = ChronoUnit.DAYS.between(startDate, endDate);
-		LocalDate tempDate = startDate;
-		for (int j = 0; j <= i; j++)
-		{
-			DutyNight tempDutyNight = new DutyNight();
-			tempDutyNight.setDate(tempDate);
-			for (int k = 0; k < RAs.size(); k++)
-			{
-				RAObject tempRA = RAs.get(k);
-				if (!(tempRA.getUnavailableDays().contains(tempDate.getDayOfWeek())) && !(tempRA.getUnavailableDates().contains(tempDate)))
-				{
-					if (tempDutyNight.getRA1() == null)
-					{
-						tempDutyNight.setRA1(tempRA);
-					}
-					else if (tempDutyNight.getRA2() == null)
-					{
-						tempDutyNight.setRA2(tempRA);
-					}
-					else
-					{
-						tempDutyNight.getAlternateRAs().add(tempRA);
-					}
-				}
-			}
-			dutyList.add(tempDutyNight);
-			tempDate = tempDate.plusDays(1);
-		}
-		
-		return dutyList;
-	}
+//	public static ArrayList<DutyNight> run(LocalDate startDate, LocalDate endDate, ArrayList<RAObject> RAs)
+//	{
+//		ArrayList<DutyNight> dutyList = new ArrayList<DutyNight>();
+//		
+//		long i = ChronoUnit.DAYS.between(startDate, endDate);
+//		LocalDate tempDate = startDate;
+//		for (int j = 0; j <= i; j++)
+//		{
+//			DutyNight tempDutyNight = new DutyNight();
+//			tempDutyNight.setDate(tempDate);
+//			for (int k = 0; k < RAs.size(); k++)
+//			{
+//				RAObject tempRA = RAs.get(k);
+//				if (!(tempRA.getUnavailableDays().contains(tempDate.getDayOfWeek())) && !(tempRA.getUnavailableDates().contains(tempDate)))
+//				{
+//					if (tempDutyNight.getRA1() == null)
+//					{
+//						tempDutyNight.setRA1(tempRA);
+//					}
+//					else if (tempDutyNight.getRA2() == null)
+//					{
+//						tempDutyNight.setRA2(tempRA);
+//					}
+//					else
+//					{
+//						tempDutyNight.getAlternateRAs().add(tempRA);
+//					}
+//				}
+//			}
+//			dutyList.add(tempDutyNight);
+//			tempDate = tempDate.plusDays(1);
+//		}
+//		
+//		return dutyList;
+//	}
 	
-	private static ArrayList<RAObject> getRAs (Connection c, String tableName) throws SQLException
-	{
-		ArrayList<RAObject> RAs = new ArrayList<RAObject>();
-		
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName + " ORDER BY ID ASC;");
-		
-		while(rs.next())
-		{
-			RAObject tempRA = new RAObject();
-			tempRA.setName(rs.getString("name"));
-			tempRA.setWeekdaysWorked(rs.getInt("weekdaysWorked"));
-			tempRA.setWeekendsWorked(rs.getInt("weekendsWorked"));
-			// Remove hardcoding
-			int ID = rs.getInt("ID");
-			tempRA.setUnavailableDays(obtainUnavailableDays(c, "unavailableDays", ID));
-			tempRA.setUnavailableDates(obtainUnavailableDates(c, "unavailableDates", ID));
-			RAs.add(tempRA);
-		}
-		
-		return RAs;
-	}
+//	private static ArrayList<RAObject> getRAs (Connection c, String tableName) throws SQLException
+//	{
+//		ArrayList<RAObject> RAs = new ArrayList<RAObject>();
+//		
+//		Statement stmt = c.createStatement();
+//		ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName + " ORDER BY ID ASC;");
+//		
+//		while(rs.next())
+//		{
+//			RAObject tempRA = new RAObject();
+//			tempRA.setName(rs.getString("name"));
+//			tempRA.setWeekdaysWorked(rs.getInt("weekdaysWorked"));
+//			tempRA.setWeekendsWorked(rs.getInt("weekendsWorked"));
+//			// Remove hardcoding
+//			int ID = rs.getInt("ID");
+//			tempRA.setUnavailableDays(obtainUnavailableDays(c, "unavailableDays", ID));
+//			tempRA.setUnavailableDates(obtainUnavailableDates(c, "unavailableDates", ID));
+//			RAs.add(tempRA);
+//		}
+//		
+//		return RAs;
+//	}
+//	
+//	private static ArrayList<DayOfWeek> obtainUnavailableDays (Connection c, String tableName, int ID) throws SQLException
+//	{
+//		
+//		ArrayList<DayOfWeek> unavailableDays = new ArrayList<DayOfWeek>();
+//		
+//		Statement stmt = c.createStatement();
+//		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM " + tableName + " where ID = " + ID + ";");
+//		
+//		while(rs.next())
+//		{
+//			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableDay"));
+//			unavailableDays.add(dw);
+//		}
+//		
+//		return unavailableDays;
+//		
+//	}
 	
-	private static ArrayList<DayOfWeek> obtainUnavailableDays (Connection c, String tableName, int ID) throws SQLException
-	{
-		
-		ArrayList<DayOfWeek> unavailableDays = new ArrayList<DayOfWeek>();
-		
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDay FROM " + tableName + " where ID = " + ID + ";");
-		
-		while(rs.next())
-		{
-			DayOfWeek dw = UtilityMethods.getDayOfWeekFromString(rs.getString("unavailableDay"));
-			unavailableDays.add(dw);
-		}
-		
-		return unavailableDays;
-		
-	}
-	
-	private static ArrayList<LocalDate> obtainUnavailableDates (Connection c, String tableName, int ID) throws SQLException
-	{
-		
-		ArrayList<LocalDate> unavailableDates = new ArrayList<LocalDate>();
-		
-		Statement stmt = c.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT unavailableDate FROM " + tableName + " where ID = " + ID + ";");
-		
-		while(rs.next())
-		{
-			LocalDate ld = RAObject.getLocalDateFromString(rs.getString("unavailableDate"));
-			unavailableDates.add(ld);
-		}
-		
-		return unavailableDates;
-		
-	}
+//	private static ArrayList<LocalDate> obtainUnavailableDates (Connection c, String tableName, int ID) throws SQLException
+//	{
+//		
+//		ArrayList<LocalDate> unavailableDates = new ArrayList<LocalDate>();
+//		
+//		Statement stmt = c.createStatement();
+//		ResultSet rs = stmt.executeQuery("SELECT unavailableDate FROM " + tableName + " where ID = " + ID + ";");
+//		
+//		while(rs.next())
+//		{
+//			LocalDate ld = RAObject.getLocalDateFromString(rs.getString("unavailableDate"));
+//			unavailableDates.add(ld);
+//		}
+//		
+//		return unavailableDates;
+//		
+//	}
 	
 	public static void main(String[] args) 
 	{

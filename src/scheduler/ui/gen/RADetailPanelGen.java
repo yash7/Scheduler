@@ -24,81 +24,82 @@ public class RADetailPanelGen extends JPanel {
 	private JTextField nameTextField;
 	private JTextField weekdaysWorkedTextField;
 	private JTextField weekendsWorkedTextField;
-	private JDatePickerImpl unDatePicker;
-	private JScrollPane unavailableDatesScrollPane;
-	private JScrollPane availableDaysScrollPane;
-	private JScrollPane unavailableDaysScrollPane;
-	private JButton toAvailableButton;
-	private JButton addUnavailableDateButton;
-	private JButton toUnavailableButton;
+	private JDatePickerImpl unNightDatePicker;
+	private JScrollPane unavailableNightDatesScrollPane;
+	private JScrollPane availableNightsScrollPane;
+	private JScrollPane unavailableNightsScrollPane;
+	private JButton toAvailableNightsButton;
+	private JButton addUnavailableNightDateButton;
+	private JButton toUnavailableNightsButton;
+	private JButton removeUnavailableNightDateButton;
 
-	private JList availableDaysJList;
-	private DefaultListModel<DayOfWeek> availableDaysListModel;
-	private JList unavailableDaysJList;
-	private DefaultListModel<DayOfWeek> unavailableDaysListModel;
-	private JList unavailableDatesJList;
-	private DefaultListModel<String> unavailableDatesListModel;
+	private JList availableNightsJList;
+	private DefaultListModel<DayOfWeek> availableNightsListModel;
+	private JList unavailableNightsJList;
+	private DefaultListModel<DayOfWeek> unavailableNightsListModel;
+	private JList unavailableNightDatesJList;
+	private DefaultListModel<String> unavailableNightDatesListModel;
 
-	class ToUnavailableButtonListener implements ActionListener
+	class ToUnavailableNightsButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			int index = availableDaysJList.getSelectedIndex();
+			int index = availableNightsJList.getSelectedIndex();
 			if (index < 0)
 			{
 				
 			}
 			else
 			{
-				DayOfWeek temp = availableDaysListModel.getElementAt(index);
-				unavailableDaysListModel.addElement(temp);
-				availableDaysListModel.remove(index);	
+				DayOfWeek temp = availableNightsListModel.getElementAt(index);
+				unavailableNightsListModel.addElement(temp);
+				availableNightsListModel.remove(index);	
 			}
 		}
 	}
 	
-	class ToAvailableButtonListener implements ActionListener
+	class ToAvailableNightsButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			int index = unavailableDaysJList.getSelectedIndex();
+			int index = unavailableNightsJList.getSelectedIndex();
 			if (index < 0)
 			{
 				
 			}
 			else
 			{
-				DayOfWeek temp = unavailableDaysListModel.getElementAt(index);
-				availableDaysListModel.addElement(temp);
-				unavailableDaysListModel.remove(index);	
+				DayOfWeek temp = unavailableNightsListModel.getElementAt(index);
+				availableNightsListModel.addElement(temp);
+				unavailableNightsListModel.remove(index);	
 			}
 		}
 	}
 	
-	class AddUnavailableDateButtonListener implements ActionListener
+	class AddUnavailableNightDateButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			String tempDate = unDatePicker.getModel().getValue().toString();
-			if (!(unavailableDatesListModel.contains(tempDate)))
+			String tempDate = unNightDatePicker.getModel().getValue().toString();
+			if (!(unavailableNightDatesListModel.contains(tempDate)))
 			{
-				unavailableDatesListModel.addElement(tempDate);
+				unavailableNightDatesListModel.addElement(tempDate);
 			}
 		}
 	}
 	
-	class RemoveUnavailableDateButtonListener implements ActionListener
+	class RemoveUnavailableNightDateButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			int index = unavailableDatesJList.getSelectedIndex();
+			int index = unavailableNightDatesJList.getSelectedIndex();
 			if (index < 0)
 			{
 				
 			}
 			else
 			{
-				unavailableDatesListModel.remove(index);
+				unavailableNightDatesListModel.remove(index);
 			}
 		}
 	}
@@ -144,35 +145,35 @@ public class RADetailPanelGen extends JPanel {
 		weekendsWorkedTextField.setBounds(148, 54, 39, 22);
 		MainPanel.add(weekendsWorkedTextField);
 		
-		availableDaysScrollPane = new JScrollPane();
-		availableDaysScrollPane.setBounds(32, 156, 131, 136);
-		MainPanel.add(availableDaysScrollPane);
+		availableNightsScrollPane = new JScrollPane();
+		availableNightsScrollPane.setBounds(32, 156, 131, 136);
+		MainPanel.add(availableNightsScrollPane);
 		
-		unavailableDaysScrollPane = new JScrollPane();
-		unavailableDaysScrollPane.setBounds(313, 156, 131, 136);
-		MainPanel.add(unavailableDaysScrollPane);
+		unavailableNightsScrollPane = new JScrollPane();
+		unavailableNightsScrollPane.setBounds(313, 156, 131, 136);
+		MainPanel.add(unavailableNightsScrollPane);
 		
-		toUnavailableButton = new JButton(">");
-		toUnavailableButton.setBounds(216, 197, 45, 25);
-		toUnavailableButton.addActionListener(new ToUnavailableButtonListener());
-		MainPanel.add(toUnavailableButton);
+		toUnavailableNightsButton = new JButton(">");
+		toUnavailableNightsButton.setBounds(216, 197, 45, 25);
+		toUnavailableNightsButton.addActionListener(new ToUnavailableNightsButtonListener());
+		MainPanel.add(toUnavailableNightsButton);
 		
-		toAvailableButton = new JButton("<");
-		toAvailableButton.setBounds(216, 235, 45, 25);
-		toAvailableButton.addActionListener(new ToAvailableButtonListener());
-		MainPanel.add(toAvailableButton);
+		toAvailableNightsButton = new JButton("<");
+		toAvailableNightsButton.setBounds(216, 235, 45, 25);
+		toAvailableNightsButton.addActionListener(new ToAvailableNightsButtonListener());
+		MainPanel.add(toAvailableNightsButton);
 		
-		JLabel availableDaysLabel = new JLabel("Available Days:");
-		availableDaysLabel.setBounds(32, 128, 131, 16);
-		MainPanel.add(availableDaysLabel);
+		JLabel availableNightsLabel = new JLabel("Available Nights:");
+		availableNightsLabel.setBounds(32, 128, 131, 16);
+		MainPanel.add(availableNightsLabel);
 		
-		JLabel unavailableDaysLabel = new JLabel("Unavailable Days:");
-		unavailableDaysLabel.setBounds(313, 127, 131, 16);
-		MainPanel.add(unavailableDaysLabel);
+		JLabel unavailableNightsLabel = new JLabel("Unavailable Nights:");
+		unavailableNightsLabel.setBounds(313, 127, 131, 16);
+		MainPanel.add(unavailableNightsLabel);
 		
-		JPanel unavailableDatePanel = new JPanel();
-		unavailableDatePanel.setBounds(32, 344, 180, 51);
-		MainPanel.add(unavailableDatePanel);
+		JPanel unavailableNightDatePanel = new JPanel();
+		unavailableNightDatePanel.setBounds(32, 344, 180, 51);
+		MainPanel.add(unavailableNightDatePanel);
 		
 		SqlDateModel model = new SqlDateModel();
 		model.setDate(LocalDateTime.now().getYear(), (LocalDateTime.now().getMonthValue() - 1), LocalDateTime.now().getDayOfMonth());
@@ -180,46 +181,46 @@ public class RADetailPanelGen extends JPanel {
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-		unavailableDatePanel.setLayout(null);
-		unDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		unDatePicker.setBounds(0, 5, 173, 33);
+		JDatePanelImpl nightDatePanel = new JDatePanelImpl(model, p);
+		unavailableNightDatePanel.setLayout(null);
+		unNightDatePicker = new JDatePickerImpl(nightDatePanel, new DateLabelFormatter());
+		unNightDatePicker.setBounds(0, 5, 173, 33);
 		
-		unavailableDatePanel.add(unDatePicker);
+		unavailableNightDatePanel.add(unNightDatePicker);
 		model.setSelected(true);
 		
-		addUnavailableDateButton = new JButton("Add");
-		addUnavailableDateButton.setBounds(216, 350, 61, 25);
-		addUnavailableDateButton.addActionListener(new AddUnavailableDateButtonListener());
-		MainPanel.add(addUnavailableDateButton);
+		addUnavailableNightDateButton = new JButton("Add");
+		addUnavailableNightDateButton.setBounds(216, 350, 61, 25);
+		addUnavailableNightDateButton.addActionListener(new AddUnavailableNightDateButtonListener());
+		MainPanel.add(addUnavailableNightDateButton);
 		
-		unavailableDatesScrollPane = new JScrollPane();
-		unavailableDatesScrollPane.setBounds(313, 344, 131, 136);
-		MainPanel.add(unavailableDatesScrollPane);
+		unavailableNightDatesScrollPane = new JScrollPane();
+		unavailableNightDatesScrollPane.setBounds(313, 344, 131, 136);
+		MainPanel.add(unavailableNightDatesScrollPane);
 		
-		JLabel unavailableDatesLabel = new JLabel("Unavailable Dates:");
-		unavailableDatesLabel.setBounds(32, 315, 131, 16);
-		MainPanel.add(unavailableDatesLabel);
+		JLabel unavailableNightDatesLabel = new JLabel("Unavailable Night Dates:");
+		unavailableNightDatesLabel.setBounds(32, 315, 155, 16);
+		MainPanel.add(unavailableNightDatesLabel);
 		
-		availableDaysListModel = new DefaultListModel<DayOfWeek>();
-		availableDaysJList = new JList(availableDaysListModel);
-		availableDaysScrollPane.setViewportView(availableDaysJList);
-		availableDaysJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		availableNightsListModel = new DefaultListModel<DayOfWeek>();
+		availableNightsJList = new JList(availableNightsListModel);
+		availableNightsScrollPane.setViewportView(availableNightsJList);
+		availableNightsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		unavailableDaysListModel = new DefaultListModel<DayOfWeek>();
-		unavailableDaysJList = new JList(unavailableDaysListModel);
-		unavailableDaysScrollPane.setViewportView(unavailableDaysJList);
-		unavailableDaysJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		unavailableNightsListModel = new DefaultListModel<DayOfWeek>();
+		unavailableNightsJList = new JList(unavailableNightsListModel);
+		unavailableNightsScrollPane.setViewportView(unavailableNightsJList);
+		unavailableNightsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		unavailableDatesListModel = new DefaultListModel<String>();
-		unavailableDatesJList = new JList(unavailableDatesListModel);
-		unavailableDatesScrollPane.setViewportView(unavailableDatesJList);
-		unavailableDatesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		unavailableNightDatesListModel = new DefaultListModel<String>();
+		unavailableNightDatesJList = new JList(unavailableNightDatesListModel);
+		unavailableNightDatesScrollPane.setViewportView(unavailableNightDatesJList);
+		unavailableNightDatesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		JButton removeUnavailableDateButton = new JButton("Remove Date");
-		removeUnavailableDateButton.setBounds(180, 455, 121, 25);
-		removeUnavailableDateButton.addActionListener(new RemoveUnavailableDateButtonListener());
-		MainPanel.add(removeUnavailableDateButton);
+		removeUnavailableNightDateButton = new JButton("Remove Date");
+		removeUnavailableNightDateButton.setBounds(180, 455, 121, 25);
+		removeUnavailableNightDateButton.addActionListener(new RemoveUnavailableNightDateButtonListener());
+		MainPanel.add(removeUnavailableNightDateButton);
 
 	}
 	public JTextField getNameTextField() {
@@ -231,49 +232,49 @@ public class RADetailPanelGen extends JPanel {
 	public JTextField getWeekdaysWorkedTextField() {
 		return weekdaysWorkedTextField;
 	}
-	public JScrollPane getUnavailableDatesScrollPane() {
-		return unavailableDatesScrollPane;
+	public JScrollPane getUnavailableNightDatesScrollPane() {
+		return unavailableNightDatesScrollPane;
 	}
-	public JScrollPane getAvailableDaysScrollPane() {
-		return availableDaysScrollPane;
+	public JScrollPane getAvailableNightsScrollPane() {
+		return availableNightsScrollPane;
 	}
-	public JScrollPane getUnavailableDaysScrollPane() {
-		return unavailableDaysScrollPane;
+	public JScrollPane getUnavailableNightsScrollPane() {
+		return unavailableNightsScrollPane;
 	}
-	public JButton getToAvailableButton() {
-		return toAvailableButton;
+	public JButton getToAvailableNightsButton() {
+		return toAvailableNightsButton;
 	}
-	public JButton getAddUnavailableDateButton() {
-		return addUnavailableDateButton;
+	public JButton getAddUnavailableNightDateButton() {
+		return addUnavailableNightDateButton;
 	}
-	public JButton getToUnavailableButton() {
-		return toUnavailableButton;
+	public JButton getToUnavailableNightsButton() {
+		return toUnavailableNightsButton;
 	}
-	public JDatePickerImpl getUnDatePicker(){
-		return unDatePicker;
+	public JDatePickerImpl getUnNightDatePicker(){
+		return unNightDatePicker;
 	}
-	public JList<DayOfWeek> getAvailableDaysJList()
+	public JList<DayOfWeek> getAvailableNightsJList()
 	{
-		return availableDaysJList;
+		return availableNightsJList;
 	}
-	public JList<DayOfWeek> getUnavailableDaysJList()
+	public JList<DayOfWeek> getUnavailableNightsJList()
 	{
-		return unavailableDaysJList;
+		return unavailableNightsJList;
 	}
-	public JList<String> getUnavailableDatesJList()
+	public JList<String> getUnavailableNightDatesJList()
 	{
-		return unavailableDatesJList;
+		return unavailableNightDatesJList;
 	}
-	public DefaultListModel<DayOfWeek> getAvailableDaysListModel()
+	public DefaultListModel<DayOfWeek> getAvailableNightsListModel()
 	{
-		return availableDaysListModel;
+		return availableNightsListModel;
 	}
-	public DefaultListModel<DayOfWeek> getUnavailableDaysListModel()
+	public DefaultListModel<DayOfWeek> getUnavailableNightsListModel()
 	{
-		return unavailableDaysListModel;
+		return unavailableNightsListModel;
 	}
-	public DefaultListModel<String> getUnavailableDatesListModel()
+	public DefaultListModel<String> getUnavailableNightDatesListModel()
 	{
-		return unavailableDatesListModel;
+		return unavailableNightDatesListModel;
 	}
 }

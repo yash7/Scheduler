@@ -3,7 +3,7 @@ package scheduler.objects;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DutyNight 
+public class DutyNight // Rename to DutyShift 
 {
 	
 	private LocalDate date;
