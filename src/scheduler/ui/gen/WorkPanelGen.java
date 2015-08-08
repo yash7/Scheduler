@@ -36,6 +36,10 @@ public class WorkPanelGen extends JPanel
 	private JLabel UnNightDatesLabel;
 	private JLabel RALabel;
 	private JButton DevResetButton;
+	private JScrollPane UnDaysScrollPane;
+	private JLabel UnavailableDaysLabel;
+	private JLabel UnavailableDayDatesLabel;
+	private JScrollPane UnDayDatesScrollPane;
 	
 	/**
 	 * Create the panel.
@@ -43,10 +47,10 @@ public class WorkPanelGen extends JPanel
 	public WorkPanelGen() 
 	{
 		setLayout(null);
-		setBounds(0, 0, 1000, 725);
+		setBounds(0, 0, 1000, 800);
 		
 		JPanel MainPanel = new JPanel();
-		MainPanel.setBounds(0, 0, 1000, 725);
+		MainPanel.setBounds(0, 0, 1000, 800);
 		add(MainPanel);
 		MainPanel.setLayout(null);
 		
@@ -55,11 +59,11 @@ public class WorkPanelGen extends JPanel
 		MainPanel.add(RAListScrollPane);
 		
 		UnNightsScrollPane = new JScrollPane();
-		UnNightsScrollPane.setBounds(46, 458, 210, 189);
+		UnNightsScrollPane.setBounds(46, 458, 165, 189);
 		MainPanel.add(UnNightsScrollPane);
 		
 		UnNightDatesScrollPane = new JScrollPane();
-		UnNightDatesScrollPane.setBounds(312, 458, 210, 189);
+		UnNightDatesScrollPane.setBounds(275, 458, 165, 189);
 		MainPanel.add(UnNightDatesScrollPane);
 		
 		StartDatePanel = new JPanel();
@@ -101,7 +105,7 @@ public class WorkPanelGen extends JPanel
 		model2.setSelected(true);
 		
 		RunButton = new JButton("Run");
-		RunButton.setBounds(566, 436, 97, 25);
+		RunButton.setBounds(566, 374, 97, 25);
 		MainPanel.add(RunButton);
 		
 		NewRAButton = new JButton("New RA");
@@ -121,16 +125,16 @@ public class WorkPanelGen extends JPanel
 		MainPanel.add(EditRAButton);
 		
 		OutputFileTextField = new JTextField();
-		OutputFileTextField.setBounds(566, 366, 253, 33);
+		OutputFileTextField.setBounds(566, 304, 253, 33);
 		MainPanel.add(OutputFileTextField);
 		OutputFileTextField.setColumns(10);
 		
 		BrowseButton = new JButton("Browse");
-		BrowseButton.setBounds(842, 370, 97, 25);
+		BrowseButton.setBounds(842, 308, 97, 25);
 		MainPanel.add(BrowseButton);
 		
 		CommitButton = new JButton("Commit changes to Database");
-		CommitButton.setBounds(705, 436, 234, 25);
+		CommitButton.setBounds(705, 374, 234, 25);
 		MainPanel.add(CommitButton);
 		
 		JLabel StartDateLabel = new JLabel("Start Date:");
@@ -142,7 +146,7 @@ public class WorkPanelGen extends JPanel
 		MainPanel.add(EndDateLabel);
 		
 		SaveFileLabel = new JLabel("Save Output File As:");
-		SaveFileLabel.setBounds(566, 329, 141, 30);
+		SaveFileLabel.setBounds(566, 267, 141, 30);
 		MainPanel.add(SaveFileLabel);
 		
 		UnNightsLabel = new JLabel("Unavailable Nights:");
@@ -150,7 +154,7 @@ public class WorkPanelGen extends JPanel
 		MainPanel.add(UnNightsLabel);
 		
 		UnNightDatesLabel = new JLabel("Unavailable Night Dates:");
-		UnNightDatesLabel.setBounds(312, 420, 148, 30);
+		UnNightDatesLabel.setBounds(275, 420, 148, 30);
 		MainPanel.add(UnNightDatesLabel);
 		
 		RALabel = new JLabel("Resident Assistants on Database:");
@@ -160,6 +164,22 @@ public class WorkPanelGen extends JPanel
 		DevResetButton = new JButton("Dev - Reset");
 		DevResetButton.setBounds(386, 393, 136, 25);
 		MainPanel.add(DevResetButton);
+		
+		UnDaysScrollPane = new JScrollPane();
+		UnDaysScrollPane.setBounds(507, 458, 165, 189);
+		MainPanel.add(UnDaysScrollPane);
+		
+		UnavailableDaysLabel = new JLabel("Unavailable Days:");
+		UnavailableDaysLabel.setBounds(507, 422, 148, 30);
+		MainPanel.add(UnavailableDaysLabel);
+		
+		UnavailableDayDatesLabel = new JLabel("Unavailable Day Dates:");
+		UnavailableDayDatesLabel.setBounds(736, 420, 148, 30);
+		MainPanel.add(UnavailableDayDatesLabel);
+		
+		UnDayDatesScrollPane = new JScrollPane();
+		UnDayDatesScrollPane.setBounds(736, 458, 165, 189);
+		MainPanel.add(UnDayDatesScrollPane);
 		
 		
 		
@@ -259,5 +279,11 @@ public class WorkPanelGen extends JPanel
 	}
 	public JButton getDevResetButton() {
 		return DevResetButton;
+	}
+	public JScrollPane getUnDayDatesScrollPane() {
+		return UnDayDatesScrollPane;
+	}
+	public JScrollPane getUnDaysScrollPane() {
+		return UnDaysScrollPane;
 	}
 }
