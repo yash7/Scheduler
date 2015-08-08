@@ -1,7 +1,7 @@
 package scheduler;
 
-import scheduler.objects.RAObject;
-import scheduler.objects.DutyNight;
+import scheduler.objects.*;
+import scheduler.objects.DutyShift.ShiftType;
 import scheduler.ui.CoreFrame;
 import scheduler.utilities.UtilityMethods;
 
