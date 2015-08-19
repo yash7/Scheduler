@@ -348,6 +348,8 @@ public class WorkPanel
 		workPanelGen.getEditRAButton().addActionListener(new EditRAButtonListener());
 		workPanelGen.getCommitButton().addActionListener(new CommitButtonListener());
 		workPanelGen.getDevResetButton().addActionListener(new DevResetButtonListener());
+		workPanelGen.getDevResetButton().setEnabled(false);
+		workPanelGen.getDevResetButton().setVisible(false);
 		workPanelGen.getCommitButton().setEnabled(false);
 
 //		String os = System.getProperty("os.name").toLowerCase();

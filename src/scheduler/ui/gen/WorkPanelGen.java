@@ -44,10 +44,10 @@ public class WorkPanelGen extends JPanel
 	public WorkPanelGen() 
 	{
 		setLayout(null);
-		setBounds(0, 0, 1000, 800);
+		setBounds(0, 0, 1000, 700);
 		
 		JPanel MainPanel = new JPanel();
-		MainPanel.setBounds(0, 0, 1000, 800);
+		MainPanel.setBounds(0, 0, 1000, 700);
 		add(MainPanel);
 		MainPanel.setLayout(null);
 		
@@ -102,7 +102,7 @@ public class WorkPanelGen extends JPanel
 		model2.setSelected(true);
 		
 		RunButton = new JButton("Run");
-		RunButton.setBounds(566, 374, 97, 25);
+		RunButton.setBounds(731, 260, 97, 25);
 		MainPanel.add(RunButton);
 		
 		NewRAButton = new JButton("New RA");
@@ -122,7 +122,7 @@ public class WorkPanelGen extends JPanel
 		MainPanel.add(EditRAButton);
 		
 		CommitButton = new JButton("Commit changes to Database");
-		CommitButton.setBounds(705, 374, 234, 25);
+		CommitButton.setBounds(667, 312, 234, 25);
 		MainPanel.add(CommitButton);
 		
 		JLabel StartDateLabel = new JLabel("Start Date:");
