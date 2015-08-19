@@ -27,11 +27,8 @@ public class WorkPanelGen extends JPanel
 	private JButton RefreshButton;
 	private JButton DeleteRAButton;
 	private JButton EditRAButton;
-	private JTextField OutputFileTextField;
-	private JButton BrowseButton;
 	private JButton CommitButton;
 	private JLabel EndDateLabel;
-	private JLabel SaveFileLabel;
 	private JLabel UnNightsLabel;
 	private JLabel UnNightDatesLabel;
 	private JLabel RALabel;
@@ -124,15 +121,6 @@ public class WorkPanelGen extends JPanel
 		EditRAButton.setBounds(316, 348, 97, 25);
 		MainPanel.add(EditRAButton);
 		
-		OutputFileTextField = new JTextField();
-		OutputFileTextField.setBounds(566, 304, 253, 33);
-		MainPanel.add(OutputFileTextField);
-		OutputFileTextField.setColumns(10);
-		
-		BrowseButton = new JButton("Browse");
-		BrowseButton.setBounds(842, 308, 97, 25);
-		MainPanel.add(BrowseButton);
-		
 		CommitButton = new JButton("Commit changes to Database");
 		CommitButton.setBounds(705, 374, 234, 25);
 		MainPanel.add(CommitButton);
@@ -144,10 +132,6 @@ public class WorkPanelGen extends JPanel
 		EndDateLabel = new JLabel("End Date:");
 		EndDateLabel.setBounds(566, 190, 69, 30);
 		MainPanel.add(EndDateLabel);
-		
-		SaveFileLabel = new JLabel("Save Output File As:");
-		SaveFileLabel.setBounds(566, 267, 141, 30);
-		MainPanel.add(SaveFileLabel);
 		
 		UnNightsLabel = new JLabel("Unavailable Nights:");
 		UnNightsLabel.setBounds(46, 422, 148, 30);
@@ -267,12 +251,6 @@ public class WorkPanelGen extends JPanel
 	}
 	public JButton getEditRAButton() {
 		return EditRAButton;
-	}
-	public JTextField getOutputFileTextField() {
-		return OutputFileTextField;
-	}
-	public JButton getBrowseButton() {
-		return BrowseButton;
 	}
 	public JButton getCommitButton() {
 		return CommitButton;

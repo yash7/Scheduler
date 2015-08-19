@@ -88,21 +88,27 @@ public class WorkPanel
 			
 			try
 			{
-				String outputFilePath = workPanelGen.getOutputFileTextField().getText();
-				if (outputFilePath.compareTo("") == 0)
+				File f2 = new File("Schedules");
+				if (f2.exists() && f2.isDirectory())
 				{
-					JOptionPane.showMessageDialog(workPanelGen, "You must enter a valid location to save the file.", "Empty file path", JOptionPane.ERROR_MESSAGE);
+					System.out.println("F exists");
 				}
 				else
 				{
-					Prioritize.run(c, sDate, eDate, outputFilePath);
-					run = true;
-					
-					File f = new File(outputFilePath);
-					if (Desktop.isDesktopSupported())
-					{
-						Desktop.getDesktop().edit(f);
-					}
+					System.out.println("F doesn't exist");
+					f2.mkdir();
+				}
+				
+				String outputFilePath = "Schedules/" + LocalDateTime.now().getYear() + "_" + LocalDateTime.now().getMonthValue() + "_" + LocalDateTime.now().getDayOfMonth() + "_" + LocalDateTime.now().getHour() + "_" + LocalDateTime.now().getMinute() + "_" + LocalDateTime.now().getSecond() + ".txt" ;
+				
+				Prioritize.run(c, sDate, eDate, outputFilePath);
+				run = true;
+				workPanelGen.getCommitButton().setEnabled(true);
+				
+				File f = new File(outputFilePath);
+				if (Desktop.isDesktopSupported())
+				{
+					Desktop.getDesktop().edit(f);
 				}
 			}
 			catch (Exception ex)
@@ -262,24 +268,6 @@ public class WorkPanel
 		}
 	}
 	
-	class BrowseButtonListener implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			// "C:/Users/Yash/Desktop/Test_" + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + ".txt"
-			JFileChooser c = new JFileChooser();
-			// File f = new File("C:/Users/Yash/Desktop/untitled.txt");
-			// c.setCurrentDirectory(f);
-			// System.out.println(c.getCurrentDirectory().getAbsolutePath());
-			int res = c.showSaveDialog(workPanelGen);
-			
-			if (res == JFileChooser.APPROVE_OPTION)
-			{
-				workPanelGen.getOutputFileTextField().setText(c.getSelectedFile().getAbsolutePath() + ".txt");
-			}
-		}
-	}
-	
 	class CommitButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -358,10 +346,23 @@ public class WorkPanel
 		workPanelGen.getRefreshButton().addActionListener(new RefreshButtonListener());
 		workPanelGen.getDeleteRAButton().addActionListener(new DeleteButtonListener());
 		workPanelGen.getEditRAButton().addActionListener(new EditRAButtonListener());
-		workPanelGen.getBrowseButton().addActionListener(new BrowseButtonListener());
 		workPanelGen.getCommitButton().addActionListener(new CommitButtonListener());
 		workPanelGen.getDevResetButton().addActionListener(new DevResetButtonListener());
-		workPanelGen.getOutputFileTextField().setText("C:\\Users\\Yash\\Desktop\\test" + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + ".txt");
+		workPanelGen.getCommitButton().setEnabled(false);
+
+//		String os = System.getProperty("os.name").toLowerCase();
+//		
+//		String desktopPath = System.getProperty("user.home") + "/Desktop";
+//		
+//		if (os.contains("win"))
+//		{
+//			workPanelGen.getOutputFileTextField().setText(desktopPath + "/test" + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + ".txt");
+//		}
+//		else
+//		{
+//			// /Users/username/Desktop/Filename.txt
+//			workPanelGen.getOutputFileTextField().setText(desktopPath + "/test" + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + ".txt");
+//		}
 	}
 	
 //	private static JDatePickerImpl createStartDatePicker()

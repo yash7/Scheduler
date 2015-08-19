@@ -13,7 +13,7 @@ public class RAObject
 {
 	
 //	private static int universalID = 0;
-//	private int ID;
+	private int ID;
 	private String name;
 	private ArrayList<LocalDate> unavailableNightDates;
 	private ArrayList<DayOfWeek> unavailableNights;
@@ -35,10 +35,10 @@ public class RAObject
 		weekdaysWorked = 0;
 	}
 	
-//	public int getID()
-//	{
-//		return ID;
-//	}
+	public int getID()
+	{
+		return ID;
+	}
 	
 	public String getName() 
 	{
@@ -73,6 +73,11 @@ public class RAObject
 	public int getWeekdaysWorked()
 	{
 		return weekdaysWorked;
+	}
+	
+	public void setID(int i)
+	{
+		ID = i;
 	}
 	
 	public void setName(String n)

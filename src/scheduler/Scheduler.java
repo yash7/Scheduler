@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import org.jdatepicker.impl.*;
 import org.sqlite.SQLiteConfig;
 
+import javax.swing.SwingUtilities;
+
 public class Scheduler 
 {
 		
@@ -121,49 +123,57 @@ public class Scheduler
 	public static void main(String[] args) 
 	{
 		
-		Connection c = null;
-		
-		try
+		SwingUtilities.invokeLater(new Runnable()
 		{
-			Class.forName("org.sqlite.JDBC");
-			SQLiteConfig config = new SQLiteConfig();
-			config.enforceForeignKeys(true);
-			c = DriverManager.getConnection("jdbc:sqlite:database.db", config.toProperties());
-			CoreFrame core = new CoreFrame(c, "Resident_Assistants");
-			
-//			String s = core.getWorkPanel().getWorkPanelGen().getStartDatePicker().getModel().getValue().toString();
-//			String e = core.getWorkPanel().getWorkPanelGen().getEndDatePicker().getModel().getValue().toString();
-//			
-//			ArrayList<RAObject> RAs = getRAs(c, "Resident_Assistants"); // Remove hardcoding
-//			
-//			for (int i = 0; i < RAs.size(); i++)
-//			{
-//				System.out.println(RAs.get(i));
-//			}
-			
-//			LocalDate startDate = LocalDate.of(2015, 07, 01);
-//			LocalDate endDate = LocalDate.of(2015, 07, 30);
-//			
-//			LocalDate startDate = RAObject.getLocalDateFromString(s);
-//			LocalDate endDate = RAObject.getLocalDateFromString(e);
-//			
-//			System.out.println(startDate.toString());
-//			System.out.println(endDate.toString());
-//			ArrayList<DutyNight> dutyNights = run(startDate, endDate, RAs);
-//
-//			for (int i = 0; i < dutyNights.size(); i++)
-//			{
-//				System.out.println(dutyNights.get(i));
-//			}
+			public void run()
+			{
+				Connection c = null;
+				
+				try
+				{
+					Class.forName("org.sqlite.JDBC");
+					SQLiteConfig config = new SQLiteConfig();
+					config.enforceForeignKeys(true);
+					c = DriverManager.getConnection("jdbc:sqlite:database.db", config.toProperties());
+					CoreFrame core = new CoreFrame(c, "Resident_Assistants");
+					
+//					String s = core.getWorkPanel().getWorkPanelGen().getStartDatePicker().getModel().getValue().toString();
+//					String e = core.getWorkPanel().getWorkPanelGen().getEndDatePicker().getModel().getValue().toString();
+//					
+//					ArrayList<RAObject> RAs = getRAs(c, "Resident_Assistants"); // Remove hardcoding
+//					
+//					for (int i = 0; i < RAs.size(); i++)
+//					{
+//						System.out.println(RAs.get(i));
+//					}
+					
+//					LocalDate startDate = LocalDate.of(2015, 07, 01);
+//					LocalDate endDate = LocalDate.of(2015, 07, 30);
+//					
+//					LocalDate startDate = RAObject.getLocalDateFromString(s);
+//					LocalDate endDate = RAObject.getLocalDateFromString(e);
+//					
+//					System.out.println(startDate.toString());
+//					System.out.println(endDate.toString());
+//					ArrayList<DutyNight> dutyNights = run(startDate, endDate, RAs);
+		//
+//					for (int i = 0; i < dutyNights.size(); i++)
+//					{
+//						System.out.println(dutyNights.get(i));
+//					}
 
-			
-			
-		}	
-		catch (Exception e)
-		{
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
-		}
+					
+					
+				}	
+				catch (Exception e)
+				{
+					System.err.println(e.getClass().getName() + ": " + e.getMessage());
+					System.exit(0);
+				}
+			}
+		});
+		
+		
 		
 		
 		

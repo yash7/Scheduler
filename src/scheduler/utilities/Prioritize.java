@@ -109,6 +109,7 @@ public class Prioritize
 		while(rs.next())
 		{
 			RAObject tempRA = new RAObject();
+			tempRA.setID(rs.getInt("ID"));
 			tempRA.setName(rs.getString("name"));
 			tempRA.setWeekdaysWorked(rs.getInt("weekdaysWorked"));
 			tempRA.setWeekendsWorked(rs.getInt("weekendsWorked"));
@@ -678,6 +679,7 @@ public class Prioritize
 			for (int i = 0; i < RAs.size(); i++)
 			{
 				pw.println(RAs.get(i));
+				System.out.println(RAs.get(i).getID()); // to remove
 			}
 			
 			pw.close();
@@ -784,6 +786,7 @@ public class Prioritize
 		pw.println("Total Shifts: " + dutyShifts.size());
 		pw.println();
 	}
-	// Implement single RA Day Duty shifts
+	// Add database next to jar.
+	// In addition to above, add check for database as well as contingency of creating it if it doesn't exist.
 
 }

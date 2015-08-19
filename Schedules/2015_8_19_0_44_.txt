@@ -1,0 +1,210 @@
+Date: 2015-08-19 00:44:10.664
+
+RA Duty Schedule from 2015-08-19 to 2015-09-19
+
+2015-08-19 WEDNESDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-08-20 THURSDAY NIGHT
+Yash
+Johnald
+Alternates: Maggi Sam
+
+2015-08-21 FRIDAY NIGHT
+Johnald
+Maggi
+Alternates: Sam Yash
+
+2015-08-22 SATURDAY DAY
+Maggi
+Alternates: Sam Yash
+
+2015-08-22 SATURDAY NIGHT
+Sam
+Maggi
+Alternates: Yash
+
+2015-08-23 SUNDAY DAY
+Sam
+Alternates: Yash Maggi
+
+2015-08-23 SUNDAY NIGHT
+Yash
+Sam
+Alternates: Maggi
+
+2015-08-24 MONDAY NIGHT
+Johnald
+Maggi
+Alternates: Yash Sam
+
+2015-08-25 TUESDAY NIGHT
+Yash
+Maggi
+Alternates: Johnald Sam
+
+2015-08-26 WEDNESDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-08-27 THURSDAY NIGHT
+Yash
+Maggi
+Alternates: Johnald Sam
+
+2015-08-28 FRIDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-08-29 SATURDAY DAY
+Sam
+Alternates: Yash Maggi
+
+2015-08-29 SATURDAY NIGHT
+Yash
+Sam
+Alternates: Maggi
+
+2015-08-30 SUNDAY DAY
+Yash
+Alternates: Maggi Sam
+
+2015-08-30 SUNDAY NIGHT
+Yash
+Sam
+Alternates: Maggi
+
+2015-08-31 MONDAY NIGHT
+Johnald
+Maggi
+Alternates: Sam Yash
+
+2015-09-01 TUESDAY NIGHT
+Johnald
+Sam
+Alternates: Maggi Yash
+
+2015-09-02 WEDNESDAY NIGHT
+Johnald
+Maggi
+Alternates: Yash Sam
+
+2015-09-03 THURSDAY NIGHT
+Yash
+Maggi
+Alternates: Johnald Sam
+
+2015-09-04 FRIDAY NIGHT
+Johnald
+Maggi
+Alternates: Yash Sam
+
+2015-09-05 SATURDAY DAY
+Sam
+Alternates: Yash Maggi
+
+2015-09-05 SATURDAY NIGHT
+Yash
+Maggi
+Alternates: Sam
+
+2015-09-06 SUNDAY DAY
+Yash
+Alternates: Maggi Sam
+
+2015-09-06 SUNDAY NIGHT
+Maggi
+Yash
+Alternates: Sam
+
+2015-09-07 MONDAY NIGHT
+Johnald
+Sam
+Alternates: Maggi Yash
+
+2015-09-08 TUESDAY NIGHT
+Johnald
+Yash
+Alternates: Maggi Sam
+
+2015-09-09 WEDNESDAY NIGHT
+Johnald
+Maggi
+Alternates: Sam Yash
+
+2015-09-10 THURSDAY NIGHT
+Sam
+Maggi
+Alternates: Johnald Yash
+
+2015-09-11 FRIDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-09-12 SATURDAY DAY
+Sam
+Alternates: Yash Maggi
+
+2015-09-12 SATURDAY NIGHT
+Yash
+Maggi
+Alternates: Sam
+
+2015-09-13 SUNDAY DAY
+Yash
+Alternates: Maggi Sam
+
+2015-09-13 SUNDAY NIGHT
+Sam
+Maggi
+Alternates: Yash
+
+2015-09-14 MONDAY NIGHT
+Johnald
+Yash
+Alternates: Maggi Sam
+
+2015-09-15 TUESDAY NIGHT
+Johnald
+Maggi
+Alternates: Sam Yash
+
+2015-09-16 WEDNESDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-09-17 THURSDAY NIGHT
+Yash
+Sam
+Alternates: Johnald Maggi
+
+2015-09-18 FRIDAY NIGHT
+Johnald
+Sam
+Alternates: Yash Maggi
+
+2015-09-19 SATURDAY DAY
+Maggi
+Alternates: Yash Sam
+
+2015-09-19 SATURDAY NIGHT
+Yash
+Maggi
+Alternates: Sam
+
+
+Total Day Duty Shifts: 9
+Total Weekday Night Shifts: 22
+Total Weekend Night Shifts: 10
+Total Shifts: 41
+
+Johnald weekends = 18 weekdays = 53
+Maggi weekends = 20 weekdays = 54
+Sam weekends = 19 weekdays = 54
+Yash weekends = 19 weekdays = 53
