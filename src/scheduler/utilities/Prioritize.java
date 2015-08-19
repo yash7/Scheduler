@@ -132,15 +132,16 @@ public class Prioritize
 			for (int i = 0; i < RAs.size(); i++)
 			{
 				RAObject tempRA = RAs.get(i);
+				int tempID = tempRA.getID();
 				String tempName = tempRA.getName();
 				int newWeekendsWorked = tempRA.getWeekendsWorked();
 				int newWeekdaysWorked = tempRA.getWeekdaysWorked();
 				
 				Statement stmt = c.createStatement();
 				
-				String sql = ("UPDATE Resident_Assistants SET weekendsWorked = " + newWeekendsWorked + " WHERE name = '" + tempName + "';");  
+				String sql = ("UPDATE Resident_Assistants SET weekendsWorked = " + newWeekendsWorked + " WHERE ID = '" + tempID + "';");  
 				stmt.executeUpdate(sql);
-				sql = ("UPDATE Resident_Assistants SET weekdaysWorked = " + newWeekdaysWorked + " WHERE name = '" + tempName + "';");
+				sql = ("UPDATE Resident_Assistants SET weekdaysWorked = " + newWeekdaysWorked + " WHERE ID = '" + tempID + "';");
 				stmt.executeUpdate(sql);
 			}
 		}
@@ -305,7 +306,7 @@ public class Prioritize
 				{
 					Random r = new Random();
 					int ra2Index = r.nextInt(availableRAs.size());
-					while (availableRAs.get(ra2Index).getName().compareTo(tempDS.getRA1().getName()) == 0) // USE ID
+					while (availableRAs.get(ra2Index).getID() == tempDS.getRA1().getID())
 					{
 						ra2Index = r.nextInt(availableRAs.size());
 					}
@@ -320,7 +321,7 @@ public class Prioritize
 				for (int k = 0; k < availableRAs.size(); k++)
 				{
 					RAObject tempRA = availableRAs.get(k);
-					if ((tempRA.getName().compareTo(tempDS.getRA1().getName()) != 0) && (tempRA.getName().compareTo(((DutyNight)tempDS).getRA2().getName()) != 0) && !(tempDS.getAlternateRAs().contains(tempRA)))
+					if ((tempRA.getID() != tempDS.getRA1().getID()) && (tempRA.getID() != ((DutyNight)tempDS).getRA2().getID()) && !(tempDS.getAlternateRAs().contains(tempRA)))
 					{
 						tempDS.addAlternateRA(tempRA);
 					}
@@ -433,7 +434,7 @@ public class Prioritize
 				for (int k = 0; k < availableRAs.size(); k++)
 				{
 					RAObject tempRA = availableRAs.get(k);
-					if ((tempRA.getName().compareTo(tempDS.getRA1().getName()) != 0) && !(tempDS.getAlternateRAs().contains(tempRA)))
+					if ((tempRA.getID() != tempDS.getRA1().getID()) && !(tempDS.getAlternateRAs().contains(tempRA)))
 					{
 						tempDS.addAlternateRA(tempRA);
 					}
@@ -533,7 +534,7 @@ public class Prioritize
 				{
 					Random r = new Random();
 					int ra2Index = r.nextInt(availableRAs.size());
-					while (availableRAs.get(ra2Index).getName().compareTo(tempDS.getRA1().getName()) == 0) // USE ID
+					while (availableRAs.get(ra2Index).getID() != tempDS.getRA1().getID())
 					{
 						ra2Index = r.nextInt(availableRAs.size());
 					}
@@ -548,7 +549,7 @@ public class Prioritize
 				for (int k = 0; k < availableRAs.size(); k++)
 				{
 					RAObject tempRA = availableRAs.get(k);
-					if ((tempRA.getName().compareTo(tempDS.getRA1().getName()) != 0) && (tempRA.getName().compareTo(((DutyNight)tempDS).getRA2().getName()) != 0) && !(tempDS.getAlternateRAs().contains(tempRA)))
+					if ((tempRA.getID() != tempDS.getRA1().getID()) && (tempRA.getID() != ((DutyNight)tempDS).getRA2().getID()) && !(tempDS.getAlternateRAs().contains(tempRA)))
 					{
 						tempDS.addAlternateRA(tempRA);
 					}
